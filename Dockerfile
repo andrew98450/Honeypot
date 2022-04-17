@@ -8,7 +8,9 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
 
-FROM zambhav/metasploitable2 AS metasploitable2
+FROM edurange2/metasploitable3 AS metasploitable3
 
 COPY --from=zerotier . ./
+
+CMD [ "/bin/bash" ]
 
