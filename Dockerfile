@@ -11,5 +11,3 @@ COPY --from=python3 . ./
 FROM dinotools/dionaea:latest AS dionaea
 
 COPY --from=zerotier . ./
-
-CMD [ "/bin/bash" ]
