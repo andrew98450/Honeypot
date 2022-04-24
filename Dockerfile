@@ -7,6 +7,9 @@ RUN pip3 install -r requirements.txt
 FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
+
+FROM dinotools/dionaea:latest AS dionaea
+
 COPY --from=zerotier . ./
 
 CMD [ "/bin/bash" ]
