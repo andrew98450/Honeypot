@@ -8,10 +8,8 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
 
-FROM cowrie/cowrie:latest AS cowrie
 FROM dinotools/dionaea:latest AS dionaea
 
-COPY --from=cowrie . ./
 COPY --from=zerotier . ./
 
 CMD [ "python3", "sniff.py" ]
