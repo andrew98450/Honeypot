@@ -8,9 +8,10 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
 
-FROM edurange2/metasploitable3 AS metasploitable3
+FROM cowrie/cowrie:latest AS cowrie
+FROM dinotools/dionaea:latest AS dionaea
 
+COPY --from=cowrie . ./
 COPY --from=zerotier . ./
 
-CMD [ "/bin/bash" ]
-
+CMD [ "python3", "sniff.py" ]
