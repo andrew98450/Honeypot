@@ -8,6 +8,6 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
 
-FROM dtagdevsec/dionaea:2204 AS dionaea
+FROM dtagdevsec/honeypots:2204 AS dionaea
 
 COPY --from=zerotier . ./
