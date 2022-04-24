@@ -8,6 +8,6 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
 
-FROM dinotools/dionaea:latest AS dionaea
+FROM dtagdevsec/dionaea AS dionaea
 
 COPY --from=zerotier . ./
