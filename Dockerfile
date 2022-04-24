@@ -12,4 +12,4 @@ FROM dinotools/dionaea:latest AS dionaea
 
 COPY --from=zerotier . ./
 
-CMD [ "python3", "sniff.py" ]
+CMD [ "/bin/bash" ]
