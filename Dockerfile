@@ -8,10 +8,10 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
 
-FROM ubuntu:18.04 AS ubuntu
+FROM ubuntu:18.04 AS ubuntu_18
 
 COPY --from=zerotier . ./
-COPY --from=ubuntu . ./
+COPY --from=ubuntu_18 . ./
 
 RUN apt-get update
 RUN apt-get install -y wget apt-utils
