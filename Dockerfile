@@ -20,7 +20,7 @@ RUN apt-get install -y \
     check \
     cython3 \
     libcurl4-openssl-dev \
-    libemu-dev
+    libemu-dev \
     libev-dev \
     libglib2.0-dev \
     libloudmouth1-dev \
