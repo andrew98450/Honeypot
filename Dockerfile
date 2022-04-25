@@ -4,13 +4,13 @@ COPY . ./
 
 RUN pip3 install -r requirements.txt
 
-FROM ubuntu:18.04 AS ubuntu_18
+FROM ubuntu:20.04 AS ubuntu_20
 
 COPY --from=python3 . ./
 
 FROM zerotier/zerotier:latest AS zerotier
 
-COPY --from=ubuntu_18 . ./
+COPY --from=ubuntu_20 . ./
 
 RUN apt-get update
 RUN apt-get install -y wget apt-utils
