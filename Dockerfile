@@ -4,7 +4,7 @@ COPY . ./
 
 RUN pip3 install -r requirements.txt
 
-FROM ubuntu:20.04 AS ubuntu_20
+FROM ubuntu:focal AS ubuntu_focal
 
 COPY --from=python3 . ./
 
@@ -42,5 +42,5 @@ RUN make install
 
 FROM zerotier/zerotier:latest AS zerotier
 
-COPY --from=ubuntu_20 . ./
+COPY --from=ubuntu_focal . ./
 
