@@ -13,10 +13,10 @@ FROM ubuntu:20.04 AS ubuntu
 COPY --from=zerotier . ./
 
 RUN apt-get update
-RUN apt install wget
+RUN apt install -y wget apt-utils
 RUN wget http://archive.ubuntu.com/ubuntu/pool/universe/libe/libemu/libemu2_0.2.0+git20120122-1.2build1_amd64.deb http://archive.ubuntu.com/ubuntu/pool/universe/libe/libemu/libemu-dev_0.2.0+git20120122-1.2build1_amd64.deb
-RUN apt install ./libemu2_0.2.0+git20120122-1.2build1_amd64.deb ./libemu-dev_0.2.0+git20120122-1.2build1_amd64.deb
-RUN apt-get install \
+RUN apt install -y ./libemu2_0.2.0+git20120122-1.2build1_amd64.deb ./libemu-dev_0.2.0+git20120122-1.2build1_amd64.deb
+RUN apt-get install -y \
     build-essential \
     cmake \
     check \
