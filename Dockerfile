@@ -11,6 +11,7 @@ COPY --from=python3 . ./
 FROM ubuntu:18.04 AS ubuntu
 
 COPY --from=zerotier . ./
+COPY --from=ubuntu . ./
 
 RUN apt-get update
 RUN apt-get install -y wget apt-utils
