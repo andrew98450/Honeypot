@@ -8,7 +8,7 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
 
-FROM ubuntu:20.04 AS ubuntu
+FROM ubuntu:18.04 AS ubuntu
 
 COPY --from=zerotier . ./
 
