@@ -6,10 +6,8 @@ RUN pip3 install -r requirements.txt
 
 FROM ubuntu:focal AS ubuntu_focal
 
-COPY --from=python3 . ./
-
 RUN apt-get update
-RUN apt-get install -y wget apt-utils
+RUN apt-get install -y apt-utils
 RUN apt-get install -y \
     build-essential \
     cmake \
@@ -42,5 +40,6 @@ RUN make install
 
 FROM zerotier/zerotier:latest AS zerotier
 
+COPY --from=python3 . ./
 COPY --from=ubuntu_focal . ./
 
