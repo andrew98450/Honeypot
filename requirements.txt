@@ -1,2 +1,5 @@
 scapy
 Flask
+bson
+yaml 
+boto3
