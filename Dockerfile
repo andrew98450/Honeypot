@@ -7,9 +7,10 @@ RUN pip3 install -r requirements.txt
 FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
-COPY --from=zerotier . ./
 
-FROM ubuntu:18.04 AS ubuntu_18
+FROM ubuntu:18.04 
+
+COPY --from=zerotier . ./
 
 RUN apt-get update
 RUN apt-get install -y wget apt-utils
