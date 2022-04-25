@@ -1,4 +1,4 @@
-FROM python:3.9.12-slim AS python3
+FROM python:3.9.12-alpine AS python3
 
 COPY . ./
 
