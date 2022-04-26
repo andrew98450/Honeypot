@@ -4,7 +4,7 @@ COPY . ./
 
 RUN pip3 install -r requirements.txt
 
-FROM ubuntu:focal AS ubuntu_focal
+FROM ubuntu:18.04 AS ubuntu_18
 
 RUN apt-get update
 RUN apt-get install -y apt-utils wget
@@ -43,5 +43,5 @@ RUN make install
 FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=python3 . ./
-COPY --from=ubuntu_focal . ./
+COPY --from=ubuntu_18 . ./
 
