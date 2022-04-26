@@ -5,6 +5,7 @@ COPY . ./
 RUN apt-get update
 RUN export DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get install tzdata
 RUN apt-get install -q -y apt-utils
 RUN apt-get install -q -y \
     build-essential \
