@@ -5,7 +5,7 @@ COPY . ./
 RUN apt-get update
 RUN export DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get install tzdata
+RUN apt-get install -q -y tzdata
 RUN apt-get install -q -y apt-utils
 RUN apt-get install -q -y \
     build-essential \
@@ -40,7 +40,7 @@ RUN cd dionaea
 
 RUN mkdir build
 RUN cd build
-RUN cmake -DCMAKE_INSTALL_PREFIX:PATH="/opt/dionaea" ../
+RUN cmake -DCMAKE_INSTALL_PREFIX:PATH="/opt/dionaea" ./dionaea
 
 RUN make
 RUN make install
