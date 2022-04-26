@@ -40,7 +40,7 @@ RUN cd dionaea
 
 RUN mkdir build
 RUN cd build
-RUN cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/dionaea .
+RUN cmake -DCMAKE_INSTALL_PREFIX:PATH="/opt/dionaea" ../
 
 RUN make
 RUN make install
