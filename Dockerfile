@@ -3,8 +3,10 @@ FROM ubuntu:18.04 AS ubuntu_18
 COPY . ./
 
 RUN apt-get update
-RUN apt-get install -y apt-utils
-RUN apt-get install -y \
+RUN export DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get install -q -y apt-utils
+RUN apt-get install -q -y \
     build-essential \
     cmake \
     check \
