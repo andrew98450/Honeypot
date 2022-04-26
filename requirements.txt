@@ -1,5 +1,2 @@
 scapy
 Flask
-bson
-PyYAML
-boto3
