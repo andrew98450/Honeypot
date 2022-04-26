@@ -21,6 +21,7 @@ RUN apt-get install -y \
     libtool \
     libudns-dev \
     python3 \
+    python3-pip \
     python3-dev \
     python3-bson \
     python3-yaml \
