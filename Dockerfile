@@ -1,15 +1,9 @@
-FROM python:3.9.12-alpine AS python3
+FROM ubuntu:18.04 AS ubuntu_18
 
 COPY . ./
 
-RUN pip3 install -r requirements.txt
-
-FROM ubuntu:18.04 AS ubuntu_18
-
 RUN apt-get update
-RUN apt-get install -y apt-utils wget
-RUN wget http://archive.ubuntu.com/ubuntu/pool/universe/libe/libemu/libemu2_0.2.0+git20120122-1.2build1_amd64.deb http://archive.ubuntu.com/ubuntu/pool/universe/libe/libemu/libemu-dev_0.2.0+git20120122-1.2build1_amd64.deb
-RUN apt-get install ./libemu2_0.2.0+git20120122-1.2build1_amd64.deb ./libemu-dev_0.2.0+git20120122-1.2build1_amd64.deb
+RUN apt-get install -y apt-utils
 RUN apt-get install -y \
     build-essential \
     cmake \
@@ -26,9 +20,16 @@ RUN apt-get install -y \
     libssl-dev \
     libtool \
     libudns-dev \
-    fonts-liberation \ 
-    git \
-    make
+    python3 \
+    python3-dev \
+    python3-bson \
+    python3-yaml \
+    python3-boto3 \
+    fonts-liberation \
+    make \
+    git
+
+RUN pip3 install -r requirements.txt
 
 RUN git clone https://github.com/DinoTools/dionaea.git
 RUN cd dionaea
@@ -42,6 +43,5 @@ RUN make install
 
 FROM zerotier/zerotier:latest AS zerotier
 
-COPY --from=python3 . ./
 COPY --from=ubuntu_18 . ./
 
