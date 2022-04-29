@@ -1,0 +1,10 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+
+spawn ./start.sh
+
+expect "enter\r"
+send -- "\r\n"
+
+expect eof
