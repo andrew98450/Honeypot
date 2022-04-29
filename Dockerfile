@@ -18,6 +18,4 @@ CMD ["/bin/bash"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN |1 DEBIAN_FRONTEND=noninteractive /bin/sh -c
-
 ENTRYPOINT ["./start.sh"]
