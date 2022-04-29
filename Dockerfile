@@ -14,5 +14,5 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=dionaea . ./
 
-CMD ["python3", "sniff.py"]
+CMD ["./start.sh"]
 
