@@ -14,5 +14,5 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=dionaea . ./
 
-CMD ["./start.sh"]
+CMD ["/bin/sh", "-c", "./start.sh"]
 
