@@ -3,7 +3,6 @@ FROM dinotools/dionaea:nightly AS dionaea
 COPY . ./
 
 RUN chmod +x ./start.sh
-RUN chmod +x ./start.exp
 
 RUN apt-get update
 
@@ -15,5 +14,5 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=dionaea . ./
 
-CMD ["./start.exp"]
+CMD ["./start.sh"]
 
