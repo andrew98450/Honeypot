@@ -1,5 +1,7 @@
 #!/bin/bash
 
-/usr/local/sbin/entrypoint.sh &
+python3 sniff.py &
 
-python3 sniff.py
+/usr/local/sbin/entrypoint.sh
+
+
