@@ -14,8 +14,4 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=dionaea . ./
 
-CMD ["/bin/bash"]
-
-ENV DEBIAN_FRONTEND=noninteractive
-
 ENTRYPOINT ["./start.sh"]
