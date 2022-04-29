@@ -1,5 +1,7 @@
 #!/bin/bash
 
-/opt/dionaea/bin/dionaea -c ./config.cfg -D
+echo '/usr/local/sbin/entrypoint.sh &' >> /entrypoint.sh
 
-python3 sniff.py
+echo '/opt/dionaea/bin/dionaea -D' >> /entrypoint.sh
+
+echo 'python3 sniff.py' >> /entrypoint.sh
