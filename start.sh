@@ -1,9 +1,5 @@
 #!/bin/bash
 
-/usr/local/sbin/entrypoint.sh
-echo "enter"
-read line
-
-/opt/dionaea/bin/dionaea -D
+/opt/dionaea/bin/dionaea -c ./config.cfg -D
 
 python3 sniff.py
