@@ -2,8 +2,6 @@ FROM dinotools/dionaea:nightly AS dionaea
 
 COPY . ./
 
-RUN chmod +x ./start.sh
-
 RUN apt-get update
 
 RUN apt-get install -y python3-pip net-tools nano
