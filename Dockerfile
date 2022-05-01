@@ -12,4 +12,4 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=dionaea . ./
 
-ENTRYPOINT ["python3", "sniff.py"]
+ENTRYPOINT ["python3", "sniff.py", "|", "/usr/local/sbin/entrypoint.sh"]
