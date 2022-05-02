@@ -14,6 +14,6 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=dionaea . ./
 
-ENTRYPOINT ["/bin/bash"]
+RUN /usr/local/sbin/entrypoint.sh
 
-CMD ["./start.sh"]
+ENTRYPOINT ["./start.sh"]
