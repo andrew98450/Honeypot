@@ -16,6 +16,6 @@ COPY --from=dionaea . ./
 
 RUN /usr/local/sbin/entrypoint.sh
 
-ENTRYPOINT ["./bin/bash", "-c"]
+ENTRYPOINT ["/bin/bash", "-c"]
 
 CMD ["./start.sh"]
