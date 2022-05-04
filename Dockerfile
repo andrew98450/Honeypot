@@ -12,9 +12,9 @@ RUN pip3 install -r requirements.txt
 
 FROM zerotier/zerotier:latest AS zerotier
 
-HEALTHCHECK --interval=5s --timeout=3s CMD 
-
 COPY --from=dionaea . ./
+
+HEALTHCHECK --interval=5s --timeout=3s CMD /usr/local/sbin/entrypoint.sh &
 
 ENTRYPOINT ["/bin/bash", "-c"]
 
