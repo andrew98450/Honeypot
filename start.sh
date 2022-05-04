@@ -1,5 +1,5 @@
 #!/bin/bash
 
-/opt/dionaea/bin/dionaea -D
+/usr/local/sbin/entrypoint.sh &
 
 python3 sniff.py 
