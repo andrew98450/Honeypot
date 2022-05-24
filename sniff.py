@@ -1,6 +1,11 @@
 import os
+import subprocess
 from scapy.all import *
+from module import *
 
 iface = os.environ["iface"]
 
-sniff(iface=iface, prn=lambda x : x.summary())
+def onSniff(packet : Packet):
+    pass
+
+sniff(iface=iface, prn=onSniff)

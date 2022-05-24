@@ -1,3 +1,2 @@
 scapy
-Flask
 firebase-admin
