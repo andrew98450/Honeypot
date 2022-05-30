@@ -1,2 +1,5 @@
 scapy
+IP2Location
+IP2Proxy
+pyemu
 firebase-admin
