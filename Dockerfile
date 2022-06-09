@@ -8,7 +8,7 @@ RUN apt-get update
 
 RUN apt-get install -y net-tools nano
 
-FROM python:3.9.8-alpine3.14 as python3
+FROM python:3.9.8-alpine3.14 AS python3
 
 RUN pip3 install -r requirements.txt
 
