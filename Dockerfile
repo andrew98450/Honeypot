@@ -1,4 +1,4 @@
-FROM dtagdevsec/dionaea:2204 AS dionaea
+FROM dinotools/dionaea:nightly AS dionaea
 
 COPY . ./
 
