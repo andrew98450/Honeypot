@@ -1,2 +1,2 @@
-/opt/dionaea/bin/dionaea -u dionaea -g dionaea -c /opt/dionaea/etc/dionaea/dionaea.cfg
+/opt/dionaea/bin/dionaea -D
 python3 sniff.py 
