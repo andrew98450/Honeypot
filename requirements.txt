@@ -1,3 +1,3 @@
 scapy
 pyemu
-firebase-admin
+firebase-admin==4.5.3
