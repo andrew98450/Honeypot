@@ -16,4 +16,4 @@ COPY --from=dionaea . ./
 
 ENTRYPOINT ["/bin/bash", "-c"]
 
-CMD ["./start.sh"]
+CMD ["su -c ./start.sh"]
