@@ -12,7 +12,7 @@ config.read("setting.conf")
 
 iface = str(config.get("env", "iface"))
 cred_file = "honeypot.json"
-cred = credentials.Certificate()
+cred = credentials.Certificate(cred_file)
 firebase_admin.initialize_app(cred, {'databaseURL' : 'https://honeypot-349512-default-rtdb.firebaseio.com/'})
 ref = db.reference(path='/')
 log_ref = ref.child("timestamp")
