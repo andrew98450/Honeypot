@@ -4,6 +4,8 @@ COPY . ./
 
 USER root:root
 
+RUN chmod +x start.sh
+
 RUN apt-get update
 
 RUN apt-get install -y python3-pip net-tools nano
@@ -16,4 +18,4 @@ COPY --from=dionaea . ./
 
 ENTRYPOINT ["/bin/bash", "-c"]
 
-CMD ["su -c ./start.sh"]
+CMD ["./start.sh"]
