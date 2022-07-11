@@ -1,8 +1,6 @@
-FROM dtagdevsec/dionaea:2204 AS dionaea
+FROM dinotools/dionaea:nightly AS dionaea
 
 COPY . ./
-
-USER root:root
 
 RUN chmod +x start.sh
 
@@ -15,8 +13,6 @@ RUN pip3 install -r requirements.txt
 FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=dionaea . ./
-
-USER dionaea:dionaea
 
 ENTRYPOINT ["/bin/bash", "-c"]
 
