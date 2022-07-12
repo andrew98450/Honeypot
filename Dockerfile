@@ -14,7 +14,7 @@ FROM zerotier/zerotier:latest AS zerotier
 
 COPY --from=dionaea . ./
 
-HEALTHCHECK --interval=5s --timeout=3s CMD sudo /usr/local/sbin/entrypoint.sh &
+HEALTHCHECK --interval=5s --timeout=3s CMD /usr/local/sbin/entrypoint.sh &
 
 ENTRYPOINT ["/bin/bash", "-c"]
 
