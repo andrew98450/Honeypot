@@ -1,4 +1,4 @@
-FROM dinotools/dionaea:latest AS dionaea
+FROM dinotools/dionaea:nightly AS dionaea
 
 COPY . ./
 
