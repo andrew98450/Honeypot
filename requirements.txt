@@ -1,3 +1,4 @@
 scapy
 pyemu
-firebase-admin==4.5.3
+matplotlib
+firebase-admin

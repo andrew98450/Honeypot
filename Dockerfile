@@ -1,4 +1,4 @@
-FROM dinotools/dionaea:nightly AS dionaea
+FROM dinotools/dionaea:latest AS dionaea
 
 COPY . ./
 
@@ -6,11 +6,25 @@ RUN chmod +x start.sh
 
 RUN apt-get update
 
-RUN apt-get install -y python3-pip net-tools nano
+RUN apt-get install -y net-tools nano wget cmake make build-essential libssl-dev zlib1g-dev \
+       libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+       libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev
+
+RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tar.xz
+
+RUN tar xvf Python-3.9.13.tar.xz
+
+RUN ./Python-3.9.13/configure --with-ensurepip=install
+
+RUN make -j2
+
+RUN make install
+
+RUN ldconfig
 
 RUN pip3 install -r requirements.txt
 
-FROM zerotier/zerotier:latest AS zerotier
+FROM zerotier/zerotier:1.8.9 AS zerotier
 
 COPY --from=dionaea . ./
 
