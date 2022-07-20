@@ -1,4 +1,4 @@
-import pyemu
+
 from scapy.all import *
 from scapy.layers.all import Raw
 from scapy.layers.inet import *
@@ -12,7 +12,10 @@ ports = {21 : Protocol.FTP, 23 : Protocol.TELNET, 53 : Protocol.DNS,
     80 : Protocol.HTTP, 443 : Protocol.HTTPS, 445 : Protocol.SMB}
 
 def get_information(packet : Packet):
-    p0f(packet)
+     if packet.haslayer(IP):
+        if packet.haslayer(TCP):
+            info = p0f(packet)
+            print(info)
 
 def filter_blacklist(packet : Packet, blacklist_ref : db.Reference):
     blacklist_data = blacklist_ref.get()
