@@ -10,7 +10,7 @@ from firebase_admin import db
 config = configparser.ConfigParser()
 config.read("setting.conf")
 
-iface = conf.iface
+iface = str(config.get("env", "iface"))
 cred_file = str(config.get("env", "cred"))
 cred = credentials.Certificate(cred_file)
 firebase_admin.initialize_app(cred, {'databaseURL' : 'https://honeypot-349512-default-rtdb.firebaseio.com/'})

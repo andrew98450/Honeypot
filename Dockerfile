@@ -10,13 +10,21 @@ RUN apt-get install -y net-tools nano wget cmake make build-essential libssl-dev
        libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
        libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev
 
-RUN wget https://lcamtuf.coredump.cx/p0f3/releases/p0f-3.09b.tgz
+RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
-RUN tar xvf p0f-3.09b.tgz
+RUN tar xvf p0f-2.0.8.tgz
 
-RUN make -C ./p0f-3.09b/
+RUN mkdir /opt/local
 
-RUN make -C ./p0f-3.09b/ install
+RUN mv ./p0f/p0f.fp /opt/local
+
+RUN mv ./p0f/p0fa.fp /opt/local
+
+RUN mv ./p0f/p0fr.fp /opt/local
+
+RUN mv ./p0f/p0fo.fp /opt/local
+
+RUN rm -fr ./p0f/
 
 RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tar.xz
 
@@ -27,6 +35,8 @@ RUN ./Python-3.9.13/configure --with-ensurepip=install
 RUN make -j2
 
 RUN make install
+
+RUN rm -fr ./Python-3.9.13/
 
 RUN ldconfig
 

@@ -12,7 +12,7 @@ ports = {21 : Protocol.FTP, 23 : Protocol.TELNET, 53 : Protocol.DNS,
     80 : Protocol.HTTP, 443 : Protocol.HTTPS, 445 : Protocol.SMB}
 
 def get_information(packet : Packet):
-     if packet.haslayer(IP):
+    if packet.haslayer(IP):
         if packet.haslayer(TCP):
             info = p0f(packet)
             print(info)
