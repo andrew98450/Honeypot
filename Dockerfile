@@ -1,4 +1,4 @@
-FROM dinotools/dionaea:nightly AS dionaea
+FROM dinotools/dionaea:latest AS dionaea
 
 COPY . ./
 
@@ -24,7 +24,7 @@ RUN ldconfig
 
 RUN pip3 install -r requirements.txt
 
-FROM zerotier/zerotier:1.8.10 AS zerotier
+FROM zerotier/zerotier:1.8.9 AS zerotier
 
 COPY --from=dionaea . ./
 
