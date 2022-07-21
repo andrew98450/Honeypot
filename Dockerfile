@@ -1,4 +1,4 @@
-FROM dinotools/dionaea:nightly AS dionaea
+FROM dinotools/dionaea:latest AS dionaea
 
 COPY . ./
 
@@ -46,8 +46,4 @@ FROM zerotier/zerotier:1.8.10 AS zerotier
 
 COPY --from=dionaea . ./
 
-HEALTHCHECK --interval=5s --timeout=3s CMD /usr/local/sbin/entrypoint.sh &
-
-ENTRYPOINT ["/bin/bash", "-c"]
-
-CMD ["./start.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "./start.sh"]
