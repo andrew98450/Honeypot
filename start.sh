@@ -1,9 +1,4 @@
 #!/bin/sh
-# This file is part of the dionaea honeypot
-#
-# SPDX-FileCopyrightText: 2020 PhiBo (DinoTools)
-#
-# SPDX-License-Identifier: GPL-2.0-or-later
 
 init_etc () {
     (cd /opt/dionaea/ && cp -van template/etc .)
@@ -37,5 +32,5 @@ if [ "x$DIONAEA_FORCE_INIT_DATA" = "x1" ]; then
     init_log
 fi
 
-/opt/dionaea/bin/dionaea -D -u dionaea -g dionaea -c /opt/dionaea/etc/dionaea/dionaea.cfg
+/opt/dionaea/bin/dionaea -D -u root -g root -c /opt/dionaea/etc/dionaea/dionaea.cfg
 python3 sniff.py 
