@@ -50,17 +50,17 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         pickle.dump(filted_table, open('blacktable.filter', 'wb'))
     elif packet.haslayer(IP) and packet.haslayer(UDP):
         ip_field = packet[IP]
-        tcp_field = packet[UDP]
+        udp_field = packet[UDP]
         src_ip = str(ip_field.src)
-        target_port = tcp_field.dport
-        if src_ip.replace('.', '-') in blacklist.keys() and tcp_field.flags == 0x02:
+        target_port = udp_field.dport
+        if src_ip.replace('.', '-') in blacklist.keys():
             drop_rule = Drop(i=iface, s=src_ip, dport=str(target_port), proto='tcp')
             if src_ip not in filted_table.keys():
                 filted_table[src_ip] = {target_port: drop_rule}
             if src_ip in filted_table.keys() and target_port not in filted_table[src_ip].keys():
                 filted_table[src_ip][target_port] = drop_rule
             inputs.append(drop_rule)
-        if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
+        if src_ip.replace('.', '-') not in blacklist.keys():
             if src_ip in filted_table.keys():
                 inputs.remove(filted_table[src_ip][target_port])
                 filted_table.pop(src_ip)
