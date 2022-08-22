@@ -25,7 +25,7 @@ if not os.path.exists('blacktable.filter'):
 else:
     filted_table = pickle.load(open('blacktable.filter', 'rb'))
 
-def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface):
+def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str):
     blacklist = blacklist_ref.get()
     if blacklist is None:
         return
@@ -72,6 +72,14 @@ def get_information(packet : Packet, ref : db.Reference):
    
     if packet.haslayer(IP):
         if packet.haslayer(TCP):
+            ip_field = packet[IP]
+            src_ip = ip_field.src
+            info = p0f(packet)
+            ip_ref = info_ref.child(str(src_ip).replace('.', '-'))
+            ip_ref.update({
+                'sysinfo' : info
+            })
+        elif packet.haslayer(UDP):
             ip_field = packet[IP]
             src_ip = ip_field.src
             info = p0f(packet)
