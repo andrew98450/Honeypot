@@ -22,7 +22,7 @@ event_ref = ref.child("event")
 def onSniff(packet : Packet):
     get_information(packet, ref)
     filter_blacklist(packet, blacklist_ref, iface)
-    arp_spoof_detect(packet, event_ref, iface)
+    #arp_spoof_detect(packet, event_ref, iface)
     syn_flood_detect(packet, event_ref)
     port_tcp_scan_detect(packet, event_ref)
     port_xmas_scan_detect(packet, event_ref)
