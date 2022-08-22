@@ -79,15 +79,7 @@ def get_information(packet : Packet, ref : db.Reference):
             ip_ref.update({
                 'sysinfo' : info
             })
-        elif packet.haslayer(UDP):
-            ip_field = packet[IP]
-            src_ip = ip_field.src
-            info = p0f(packet)
-            ip_ref = info_ref.child(str(src_ip).replace('.', '-'))
-            ip_ref.update({
-                'sysinfo' : info
-            })
-
+            
 def shellcode_detect(packet : Packet, event_ref : db.Reference):
 
     if packet.haslayer(IP):
