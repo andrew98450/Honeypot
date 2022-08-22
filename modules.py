@@ -1,5 +1,5 @@
 import pickle
-from datetime import datetime
+import time
 from pyptables import *
 from scapy.all import *
 from scapy.layers.all import *
@@ -114,7 +114,7 @@ def shellcode_detect(packet : Packet, event_ref : db.Reference):
                 offset = emu.shellcode_getpc_test(payload)
                 if offset is not None and offset >= 0:
                     time_ref = event_ref.child(
-                        str(int(datetime.timestamp(datetime.now()))))
+                        str(int(time.time())))
                     time_ref.update({
                         "event_type" : "ShellCode",
                         "protocol" : protocol,
@@ -131,7 +131,7 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
             syn_table[src_ip] += 1
             if syn_table[src_ip] > 30 and tcp_field.ack == 0:
                 time_ref = event_ref.child(
-                    str(int(datetime.timestamp(datetime.now()))))
+                    str(int(time.time())))
                 time_ref.update({
                     "event_type" : "Syn Flood",
                     "protocol" : 'TCP',
@@ -154,7 +154,7 @@ def arp_spoof_detect(packet : Packet, event_ref : db.Reference, iface : str):
             response_mac_address = arp_field.hwsrc
             if real_mac_address != response_mac_address:
                 time_ref = event_ref.child(
-                    str(int(datetime.timestamp(datetime.now()))))
+                    str(int(time.time())))
                 time_ref.update({
                     "event_type" : "ARP Spoofing",
                     "protocol" : 'ARP',
@@ -168,7 +168,7 @@ def dns_fuzz_detect(packet : Packet, event_ref : db.Reference, iface : str):
         dns_field = packet[DNS]
         if udp_field.dport == 53 and dns_field.qd is not None and dns_field.an is not None:
             time_ref = event_ref.child(
-                str(int(datetime.timestamp(datetime.now()))))
+                str(int(time.time())))
             time_ref.update({
                 "event_type" : "DNS Fuzz",
                 "protocol" : 'DNS',
@@ -200,7 +200,7 @@ def port_tcp_scan_detect(packet : Packet, event_ref : db.Reference):
             else:
                 protocol = 'other'
             time_ref = event_ref.child(
-                str(int(datetime.timestamp(datetime.now()))))
+                str(int(time.time())))
             time_ref.update({
                "event_type" : "PORT Scan",
                 "scan_type" : "TCP",
@@ -234,7 +234,7 @@ def port_xmas_scan_detect(packet : Packet, event_ref : db.Reference):
             else:
                 protocol = 'other'
             time_ref = event_ref.child(
-                str(int(datetime.timestamp(datetime.now()))))
+                str(int(time.time())))
             time_ref.update({
                 "event_type" : "PORT Scan",
                 "scan_type" : "XMAS",
@@ -268,7 +268,7 @@ def port_fin_scan_detect(packet : Packet, event_ref : db.Reference):
             else:
                 protocol = 'other'
             time_ref = event_ref.child(
-                str(int(datetime.timestamp(datetime.now()))))
+                str(int(time.time())))
             time_ref.update({
                 "event_type" : "PORT Scan",
                 "scan_type" : "FIN",
@@ -302,7 +302,7 @@ def port_null_scan_detect(packet : Packet, event_ref : db.Reference):
             else:
                 protocol = 'other'
             time_ref = event_ref.child(
-                str(int(datetime.timestamp(datetime.now()))))
+                str(int(time.time())))
             time_ref.update({
                 "event_type" : "PORT Scan",
                 "scan_type" : "NULL",
@@ -336,7 +336,7 @@ def port_ack_scan_detect(packet : Packet, event_ref : db.Reference):
             else:
                 protocol = 'other'
             time_ref = event_ref.child(
-                str(int(datetime.timestamp(datetime.now()))))
+                str(int(time.time())))
             time_ref.update({
                 "event_type" : "PORT Scan",
                 "scan_type" : "ACK",
