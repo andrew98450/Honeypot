@@ -92,7 +92,9 @@ def shellcode_detect(packet : Packet, event_ref : db.Reference):
                 payload = raw_field.load
                 src_ip = ip_field.src
                 target_port = tcp_field.dport
-                if ports[target_port] == Protocol.FTP:
+                if target_port not in ports.keys():
+                    protocol = 'other'
+                elif ports[target_port] == Protocol.FTP:
                     protocol = 'ftp'
                 elif ports[target_port] == Protocol.TELNET:
                     protocol = 'telnet'
@@ -108,8 +110,6 @@ def shellcode_detect(packet : Packet, event_ref : db.Reference):
                     protocol = 'mssql'
                 elif ports[target_port] == Protocol.MYSQL:
                     protocol = 'mysql'
-                else:
-                    protocol = 'other'
 
                 offset = emu.shellcode_getpc_test(payload)
                 if offset is not None and offset >= 0:
@@ -181,7 +181,9 @@ def port_tcp_scan_detect(packet : Packet, event_ref : db.Reference):
         tcp_field = packet.getlayer(TCP)
         target_port = tcp_field.dport
         if tcp_field.flags == 0x02 and tcp_field.ack == 0:
-            if ports[target_port] == Protocol.FTP:
+            if target_port not in ports.keys():
+                protocol = 'other'
+            elif ports[target_port] == Protocol.FTP:
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
@@ -197,8 +199,6 @@ def port_tcp_scan_detect(packet : Packet, event_ref : db.Reference):
                 protocol = 'mssql'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
-            else:
-                protocol = 'other'
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({
@@ -215,7 +215,9 @@ def port_xmas_scan_detect(packet : Packet, event_ref : db.Reference):
         tcp_field = packet.getlayer(TCP)
         target_port = tcp_field.dport
         if tcp_field.flags == 0x29:
-            if ports[target_port] == Protocol.FTP:
+            if target_port not in ports.keys():
+                protocol = 'other'
+            elif ports[target_port] == Protocol.FTP:
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
@@ -231,8 +233,6 @@ def port_xmas_scan_detect(packet : Packet, event_ref : db.Reference):
                 protocol = 'mssql'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
-            else:
-                protocol = 'other'
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({
@@ -249,7 +249,9 @@ def port_fin_scan_detect(packet : Packet, event_ref : db.Reference):
         tcp_field = packet.getlayer(TCP)
         target_port = tcp_field.dport
         if tcp_field.flags == 0x01:
-            if ports[target_port] == Protocol.FTP:
+            if target_port not in ports.keys():
+                protocol = 'other'
+            elif ports[target_port] == Protocol.FTP:
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
@@ -265,8 +267,6 @@ def port_fin_scan_detect(packet : Packet, event_ref : db.Reference):
                 protocol = 'mssql'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
-            else:
-                protocol = 'other'
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({
@@ -283,7 +283,9 @@ def port_null_scan_detect(packet : Packet, event_ref : db.Reference):
         tcp_field = packet.getlayer(TCP)
         target_port = tcp_field.dport
         if tcp_field.flags == 0x00:
-            if ports[target_port] == Protocol.FTP:
+            if target_port not in ports.keys():
+                protocol = 'other'
+            elif ports[target_port] == Protocol.FTP:
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
@@ -299,8 +301,6 @@ def port_null_scan_detect(packet : Packet, event_ref : db.Reference):
                 protocol = 'mssql'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
-            else:
-                protocol = 'other'
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({
@@ -317,7 +317,9 @@ def port_ack_scan_detect(packet : Packet, event_ref : db.Reference):
         tcp_field = packet.getlayer(TCP)
         target_port = tcp_field.dport
         if tcp_field.flags == 0x10:
-            if ports[target_port] == Protocol.FTP:
+            if target_port not in ports.keys():
+                protocol = 'other'
+            elif ports[target_port] == Protocol.FTP:
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
@@ -333,8 +335,6 @@ def port_ack_scan_detect(packet : Packet, event_ref : db.Reference):
                 protocol = 'mssql'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
-            else:
-                protocol = 'other'
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({
@@ -351,7 +351,9 @@ def sniffPacket(packet : Packet, time_ref : db.Reference):
             ip_field = packet.getlayer(IP)
             tcp_field = packet.getlayer(TCP)
             target_port = tcp_field.dport
-            if ports[target_port] == Protocol.FTP:
+            if target_port not in ports.keys():
+                protocol = 'other'
+            elif ports[target_port] == Protocol.FTP:
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
@@ -367,8 +369,6 @@ def sniffPacket(packet : Packet, time_ref : db.Reference):
                 protocol = 'mssql'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
-            else:
-                protocol = 'other'
             time_ref.update({
                 'protocol' : protocol,
                 'ttl' : ip_field.ttl,
@@ -382,7 +382,9 @@ def sniffPacket(packet : Packet, time_ref : db.Reference):
             ip_field = packet.getlayer(IP)
             tcp_field = packet.getlayer(UDP)
             target_port = tcp_field.dport
-            if ports[target_port] == Protocol.FTP:
+            if target_port not in ports.keys():
+                protocol = 'other'
+            elif ports[target_port] == Protocol.FTP:
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
@@ -398,8 +400,6 @@ def sniffPacket(packet : Packet, time_ref : db.Reference):
                 protocol = 'mssql'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
-            else:
-                protocol = 'other'
             time_ref.update({
                 'protocol' : protocol,
                 'ttl' : ip_field.ttl,
