@@ -54,7 +54,7 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         src_ip = str(ip_field.src)
         target_port = udp_field.dport
         if src_ip.replace('.', '-') in blacklist.keys():
-            drop_rule = Drop(i=iface, s=src_ip, dport=str(target_port), proto='tcp')
+            drop_rule = Drop(i=iface, s=src_ip, dport=str(target_port), proto='udp')
             if src_ip not in filted_table.keys():
                 filted_table[src_ip] = {target_port: drop_rule}
             if src_ip in filted_table.keys() and target_port not in filted_table[src_ip].keys():
