@@ -25,6 +25,9 @@ def onSniff(packet : Packet):
     arp_spoof_detect(packet, event_ref, iface)
     syn_flood_detect(packet, event_ref)
     port_tcp_scan_detect(packet, event_ref)
+    port_xmas_scan_detect(packet, event_ref)
+    port_null_scan_detect(packet, event_ref)
+    port_fin_scan_detect(packet, event_ref)
     shellcode_detect(packet, event_ref)
 
 sniff(iface=iface, prn=onSniff)

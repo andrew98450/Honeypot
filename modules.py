@@ -142,7 +142,7 @@ def arp_spoof_detect(packet : Packet, event_ref : db.Reference, iface : str):
     
     def get_mac(ip_address, iface):
         arp_request = Ether(dst='ff:ff:ff:ff:ff:ff') / ARP(pdst=ip_address)
-        result = srp1(arp_request, iface=iface, timeout=2)
+        result = srp1(arp_request, iface=iface, timeout=1, verbose=False)
         if result.haslayer(Ether):
             eth_data = result.getlayer(Ether)
             return eth_data.hwsrc
