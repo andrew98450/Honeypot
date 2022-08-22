@@ -1,5 +1,5 @@
 import pickle
-from datetime import datetime
+import datetime
 from pyptables import *
 from scapy.all import *
 from scapy.layers.all import *
