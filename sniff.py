@@ -1,4 +1,4 @@
-
+import os
 import firebase_admin
 import configparser
 from scapy.all import *
@@ -9,8 +9,7 @@ from modules import *
 
 config = configparser.ConfigParser()
 config.read("setting.conf")
-
-iface = str(config.get("env", "iface"))
+iface = str(os.environ['iface'])
 cred_file = str(config.get("env", "cred"))
 cred = credentials.Certificate(cred_file)
 firebase_admin.initialize_app(cred, {'databaseURL' : 'https://honeypot-349512-default-rtdb.firebaseio.com/'})
