@@ -87,9 +87,9 @@ def shellcode_detect(packet : Packet, event_ref : db.Reference):
 
             ip_field = packet[IP]
             tcp_field = packet[TCP]
-            if packet.haslayer(Raw):
+            if packet.haslayer(Raw) and len(packet[Raw].original) > 0:
                 raw_field = packet[Raw]
-                payload = raw_field.load
+                payload = raw_field.original
                 src_ip = ip_field.src
                 target_port = tcp_field.dport
                 if target_port not in ports.keys():
@@ -138,6 +138,7 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
                     "src_ip" : src_ip
                 })
 
+'''
 def arp_spoof_detect(packet : Packet, event_ref : db.Reference, iface : str):
     
     def get_mac(ip_address, iface):
@@ -160,6 +161,7 @@ def arp_spoof_detect(packet : Packet, event_ref : db.Reference, iface : str):
                     "protocol" : 'ARP',
                     "src_ip" : arp_field.psrc
                 })
+'''
 
 def dns_fuzz_detect(packet : Packet, event_ref : db.Reference, iface : str):
     if packet.haslayer(IP) and packet.haslayer(UDP) and packet.haslayer(DNS):
@@ -174,7 +176,7 @@ def dns_fuzz_detect(packet : Packet, event_ref : db.Reference, iface : str):
                 "protocol" : 'DNS',
                 "src_ip" : ip_field.src
             })
-    
+'''
 def port_tcp_scan_detect(packet : Packet, event_ref : db.Reference):
     if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet.getlayer(IP)
@@ -208,7 +210,7 @@ def port_tcp_scan_detect(packet : Packet, event_ref : db.Reference):
                 "port" : str(target_port),
                 "src_ip" : ip_field.src
             })
-
+'''
 def port_xmas_scan_detect(packet : Packet, event_ref : db.Reference):
     if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet.getlayer(IP)
