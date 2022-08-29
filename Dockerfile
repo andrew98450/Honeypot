@@ -1,4 +1,4 @@
-FROM dinotools/dionaea:nightly AS dionaea
+FROM vulnerables/web-dvwa:latest AS dvwa
 
 COPY . ./
 
@@ -44,7 +44,7 @@ RUN pip3 install -r requirements.txt
 
 FROM zerotier/zerotier:1.8.7 AS zerotier
 
-COPY --from=dionaea . ./
+COPY --from=dvwa . ./
 
 ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
