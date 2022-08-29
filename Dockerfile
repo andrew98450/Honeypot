@@ -10,8 +10,7 @@ RUN apt update
 
 RUN apt install -y net-tools nano wget cmake make git unzip tar libemu-dev libffi-dev libssl-dev \
  libgdbm-dev libsqlite3-dev zlib1g-dev iptables \
- python3 libpython3-dev python3-pip \
- apache2 mariadb-server php php-mysqli php-gd libapache2-mod-php
+ python3 libpython3-dev python3-pip
 
 RUN chmod +x start.sh
 
