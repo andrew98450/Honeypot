@@ -1,4 +1,4 @@
-FROM cyberxsecurity/dvwa:latest AS dvwa
+FROM cytopia/dvwa:php-5.5 AS dvwa
 
 COPY . ./
 
@@ -28,6 +28,8 @@ RUN tar xvf /p0f-2.0.8.tgz
 
 RUN mkdir /opt/local
 
+RUN mv /entrypoint.sh /opt/local
+
 RUN mv /p0f/p0f.fp /opt/local
 
 RUN mv /p0f/p0fa.fp /opt/local
@@ -42,7 +44,7 @@ RUN rm p0f-2.0.8.tgz
 
 RUN pip3 install -r requirements.txt
 
-FROM zerotier/zerotier:1.6.6 AS zerotier
+FROM zerotier/zerotier:1.8.7 AS zerotier
 
 COPY --from=dvwa . ./
 
