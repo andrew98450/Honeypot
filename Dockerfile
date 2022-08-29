@@ -9,21 +9,21 @@ RUN apt update
 RUN apt install -y net-tools nano wget cmake make git tar python3 libpython3-dev python3-pip libemu-dev libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev iptables
 
 RUN chmod +x start.sh
-'''
-RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
 
-RUN tar xzf Python-3.9.13.tgz
+#RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
 
-RUN ./Python-3.9.13/configure
+#RUN tar xzf Python-3.9.13.tgz
 
-RUN make
+#RUN ./Python-3.9.13/configure
 
-RUN make install
+#RUN make
 
-RUN rm -fr /Python-3.9.13/
+#RUN make install
 
-RUN rm Python-3.9.13.tgz
-'''
+#RUN rm -fr /Python-3.9.13/
+
+#RUN rm Python-3.9.13.tgz
+
 RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
 RUN tar xvf /p0f-2.0.8.tgz
