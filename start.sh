@@ -1,4 +1,3 @@
 zerotier-one -d
-service mysql start
-service apache2 start
+/run.sh &
 python3 sniff.py
