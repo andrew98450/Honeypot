@@ -1,4 +1,4 @@
-FROM ctfrayz/dvwarepo:dvwa AS dvwa
+FROM vulnerables/web-dvwa:latest AS dvwa
 
 COPY . ./
 
