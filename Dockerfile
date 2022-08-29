@@ -1,10 +1,10 @@
-FROM bsjigi/web-dvwa:latest AS dvwa
+FROM ctfrayz/dvwarepo:dvwa AS dvwa
 
 COPY . ./
 
 RUN apt update
 
-RUN apt install -y net-tools nano wget cmake make git tar libemu-dev libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev iptables
+RUN apt install -y net-tools nano wget cmake make git tar libx86emu-dev libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev iptables
 
 RUN chmod +x start.sh
 
@@ -42,7 +42,7 @@ RUN rm p0f-2.0.8.tgz
 
 RUN pip3 install -r requirements.txt
 
-FROM zerotier/zerotier:1.8.7 AS zerotier
+FROM zerotier/zerotier:1.6.6 AS zerotier
 
 COPY --from=dvwa . ./
 
