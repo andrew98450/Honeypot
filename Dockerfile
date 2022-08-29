@@ -1,4 +1,4 @@
-FROM vulnerables/web-dvwa:latest AS dvwa
+FROM citizenstig/dvwa AS dvwa
 
 WORKDIR /
 
@@ -9,18 +9,6 @@ RUN apt update
 RUN apt install -y net-tools nano wget cmake make git tar libemu-dev libffi-dev libssl-dev libgdbm-dev libsqlite3-dev zlib1g-dev iptables
 
 RUN chmod +x start.sh
-
-RUN tar xzf openssl-1.1.1q.tar.gz
-
-RUN ./openssl-1.1.1q/config 
-
-RUN make
-
-RUN make install
-
-RUN rm -fr ./openssl-1.1.1q/
-
-RUN rm openssl-1.1.1q.tar.gz
 
 RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
 
