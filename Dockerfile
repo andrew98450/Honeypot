@@ -1,4 +1,4 @@
-FROM cytopia/dvwa:php-5.5 AS dvwa
+FROM cytopia/dvwa:php-7.1 AS dvwa
 
 COPY . ./
 
