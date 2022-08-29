@@ -1,4 +1,4 @@
-FROM amrutachoudhari/web-dvwa:latest AS dvwa
+FROM cyberxsecurity/dvwa:latest AS dvwa
 
 COPY . ./
 
