@@ -1,5 +1,7 @@
 FROM cytopia/dvwa:php-7.1 AS dvwa
 
+WORKDIR /
+
 COPY . ./
 
 RUN apt update
@@ -24,7 +26,7 @@ RUN rm Python-3.9.13.tgz
 
 RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
-RUN tar xvf p0f-2.0.8.tgz
+RUN tar xvf /p0f-2.0.8.tgz
 
 RUN mkdir /opt/local
 
