@@ -1,3 +1,3 @@
 zerotier-one -d
-/main.sh &
+/run.sh &
 python3 sniff.py
