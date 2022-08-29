@@ -8,8 +8,8 @@ ENV VERSION 1.9
 
 RUN apt update
 
-RUN apt install -y net-tools nano wget cmake make git unzip tar libemu-dev libffi-dev libssl-dev /
- libgdbm-dev libsqlite3-dev zlib1g-dev iptables /
+RUN apt install -y net-tools nano wget cmake make git unzip tar libemu-dev libffi-dev libssl-dev \
+ libgdbm-dev libsqlite3-dev zlib1g-dev iptables \
  apache2 mariadb-server php5 php5-mysqli php5-gd libapache2-mod-php
 
 RUN chmod +x start.sh
