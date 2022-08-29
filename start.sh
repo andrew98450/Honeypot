@@ -1,3 +1,3 @@
 zerotier-one -d
-/usr/local/sbin/entrypoint.sh &
+/main.sh &
 python3 sniff.py 
