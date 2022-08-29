@@ -1,4 +1,4 @@
-FROM h0pp/bwapp:latest AS bwapp
+FROM vulfocus/bwapp:latest AS bwapp
 
 WORKDIR /
 
