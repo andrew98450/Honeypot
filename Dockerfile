@@ -10,8 +10,6 @@ RUN apt install -y net-tools nano wget cmake make git tar libemu-dev libffi-dev 
 
 RUN chmod +x start.sh
 
-RUN wget https://www.openssl.org/source/openssl-1.1.1q.tar.gz
-
 RUN tar xzf openssl-1.1.1q.tar.gz
 
 RUN ./openssl-1.1.1q/config 
