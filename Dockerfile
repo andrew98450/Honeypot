@@ -1,4 +1,4 @@
-FROM vulfocus/bwapp:latest AS bwapp
+FROM hackersploit/bwapp-docker:latest AS bwapp
 
 WORKDIR /
 
