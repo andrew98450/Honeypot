@@ -1,4 +1,4 @@
-FROM sagikazarmark/dvwa:latest AS dvwa
+FROM amrutachoudhari/web-dvwa:latest AS dvwa
 
 COPY . ./
 
