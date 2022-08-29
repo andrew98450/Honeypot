@@ -1,28 +1,30 @@
-FROM citizenstig/dvwa AS dvwa
+FROM python:3.9.12-slim-buster AS python
 
 WORKDIR /
 
 COPY . ./
 
+ENV VERSION 1.9
+
 RUN apt update
 
-RUN apt install -y net-tools nano wget cmake make git tar libemu-dev libffi-dev libssl-dev libgdbm-dev libsqlite3-dev zlib1g-dev iptables
+RUN apt install -y net-tools nano wget cmake make git unzip tar libemu-dev libffi-dev libssl-dev /
+ libgdbm-dev libsqlite3-dev zlib1g-dev iptables /
+ apache2 mariadb-server php5 php5-mysqli php5-gd libapache2-mod-php
 
 RUN chmod +x start.sh
 
-RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
+COPY conf/* /tmp/
 
-RUN tar xzf Python-3.9.13.tgz
+RUN wget https://github.com/ethicalhack3r/DVWA/archive/v${VERSION}.tar.gz && \
+    tar xvf /v${VERSION}.tar.gz && \
+    mv -f /DVWA-${VERSION} /app && \
+    rm /app/.htaccess && \
+    mv /tmp/.htaccess /app && \
+    chmod +x /tmp/setup_dvwa.sh && \
+    /tmp/setup_dvwa.sh
 
-RUN ./Python-3.9.13/configure
-
-RUN make
-
-RUN make install
-
-RUN rm -fr /Python-3.9.13/
-
-RUN rm Python-3.9.13.tgz
+EXPOSE 80 3306
 
 RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
@@ -46,7 +48,7 @@ RUN pip3 install -r requirements.txt
 
 FROM zerotier/zerotier:1.8.7 AS zerotier
 
-COPY --from=dvwa . ./
+COPY --from=python . ./
 
 ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
