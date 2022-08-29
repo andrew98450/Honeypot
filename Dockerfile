@@ -1,4 +1,4 @@
-FROM raesene/bwapp:latest AS bwapp
+FROM kalaxbdj/bwapp:1 AS bwapp
 
 WORKDIR /
 
