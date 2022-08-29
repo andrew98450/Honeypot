@@ -1,4 +1,4 @@
-FROM xiaotech/web-dvwa:latest AS dvwa
+FROM sagikazarmark/dvwa:latest AS dvwa
 
 COPY . ./
 
