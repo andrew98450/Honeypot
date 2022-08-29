@@ -1,4 +1,4 @@
-FROM vulnerables/web-dvwa:latest AS dvwa
+FROM stancui/web-dvwa:latest AS dvwa
 
 COPY . ./
 
