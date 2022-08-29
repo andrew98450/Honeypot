@@ -1,10 +1,10 @@
-FROM pmuench/dvwa-container-escape:latest AS dvwa
+FROM hardiyan46/dvwa:latest AS dvwa
 
 COPY . ./
 
 RUN apt update
 
-RUN apt install -y net-tools nano wget cmake make git tar libx86emu-dev libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev iptables
+RUN apt install -y net-tools nano wget cmake make git tar libemu-dev libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev iptables
 
 RUN chmod +x start.sh
 
