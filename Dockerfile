@@ -6,7 +6,7 @@ COPY . ./
 
 RUN apt update
 
-RUN apt install -y net-tools nano wget cmake make git tar libemu-dev libffi-dev libgdbm-dev libsqlite3-dev zlib1g-dev iptables
+RUN apt install -y net-tools nano wget cmake make git tar libemu-dev libffi-dev libssl-dev libgdbm-dev libsqlite3-dev zlib1g-dev iptables
 
 RUN chmod +x start.sh
 
