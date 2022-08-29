@@ -1,4 +1,4 @@
-FROM stancui/web-dvwa:latest AS dvwa
+FROM pmuench/dvwa-container-escape:latest AS dvwa
 
 COPY . ./
 
