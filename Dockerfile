@@ -6,23 +6,37 @@ COPY . ./
 
 RUN apt update
 
-RUN apt install -y net-tools nano wget cmake make git tar python3 libpython3-dev python3-pip libemu-dev libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev iptables
+RUN apt install -y net-tools nano wget cmake make git tar python3 libpython3-dev python3-pip libemu-dev libffi-dev libgdbm-dev libsqlite3-dev zlib1g-dev iptables
 
 RUN chmod +x start.sh
 
-#RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
+RUN wget https://www.openssl.org/source/openssl-1.1.1q.tar.gz
 
-#RUN tar xzf Python-3.9.13.tgz
+RUN tar xzf openssl-1.1.1q.tar.gz
 
-#RUN ./Python-3.9.13/configure
+RUN ./openssl-1.1.1q/config 
 
-#RUN make
+RUN make
 
-#RUN make install
+RUN make install
 
-#RUN rm -fr /Python-3.9.13/
+RUN rm -fr ./openssl-1.1.1q/
 
-#RUN rm Python-3.9.13.tgz
+RUN rm openssl-1.1.1q.tar.gz
+
+RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
+
+RUN tar xzf Python-3.9.13.tgz
+
+RUN ./Python-3.9.13/configure
+
+RUN make
+
+RUN make install
+
+RUN rm -fr /Python-3.9.13/
+
+RUN rm Python-3.9.13.tgz
 
 RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
@@ -44,7 +58,7 @@ RUN rm p0f-2.0.8.tgz
 
 RUN pip3 install -r requirements.txt
 
-FROM zerotier/zerotier:1.4.6 AS zerotier
+FROM zerotier/zerotier:1.8.7 AS zerotier
 
 COPY --from=dvwa . ./
 
