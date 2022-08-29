@@ -11,7 +11,7 @@ RUN apt update
 RUN apt install -y net-tools nano wget cmake make git unzip tar libemu-dev libffi-dev libssl-dev \
  libgdbm-dev libsqlite3-dev zlib1g-dev iptables \
  python3 libpython3-dev python3-pip \
- apache2 mariadb-server php5 php5-mysqli php5-gd libapache2-mod-php5
+ apache2 mariadb-server php5 php5-mysql php5-gd libapache2-mod-php5
 
 RUN chmod +x start.sh
 
