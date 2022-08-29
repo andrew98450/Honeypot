@@ -1,4 +1,4 @@
-FROM cytopia/dvwa:php-7.1 AS dvwa
+FROM kumardpravin/dvwa:02Aug22 AS dvwa
 
 WORKDIR /
 
@@ -30,8 +30,6 @@ RUN tar xvf /p0f-2.0.8.tgz
 
 RUN mkdir /opt/local
 
-RUN mv /entrypoint.sh /opt/local
-
 RUN mv /p0f/p0f.fp /opt/local
 
 RUN mv /p0f/p0fa.fp /opt/local
@@ -50,5 +48,5 @@ FROM zerotier/zerotier:1.8.7 AS zerotier
 
 COPY --from=dvwa . ./
 
-ENTRYPOINT ["/bin/bash", "-c", "start.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
