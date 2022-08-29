@@ -24,8 +24,6 @@ RUN wget https://github.com/ethicalhack3r/DVWA/archive/v${VERSION}.tar.gz && \
     chmod +x /tmp/setup_dvwa.sh && \
     /tmp/setup_dvwa.sh
 
-EXPOSE 80 3306
-
 RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
 RUN tar xvf /p0f-2.0.8.tgz
@@ -49,6 +47,8 @@ RUN pip3 install -r requirements.txt
 FROM zerotier/zerotier:1.8.7 AS zerotier
 
 COPY --from=python . ./
+
+EXPOSE 80 3306
 
 ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
