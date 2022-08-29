@@ -1,4 +1,4 @@
-FROM hardiyan46/dvwa:latest AS dvwa
+FROM bsjigi/web-dvwa:latest AS dvwa
 
 COPY . ./
 
