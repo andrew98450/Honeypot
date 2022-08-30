@@ -8,7 +8,6 @@ RUN apt install -y \
     build-essential \   
     cmake \
     check \
-    cython3 \
     libcurl4-openssl-dev \
     libemu-dev \
     libev-dev \
