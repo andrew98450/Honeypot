@@ -20,17 +20,14 @@ RUN apt install -y \
     libssl-dev \
     libtool \
     libudns-dev \
-    python3 \
-    python3-dev \
-    python3-bson \
-    python3-yaml \
-    python3-boto3 \
     fonts-liberation \
     tar unzip \
     libffi-dev \
     wget \
     make \
     git nano net-tools
+
+RUN pip3 install -r requirements.txt
 
 RUN chmod +x start.sh
 
@@ -65,8 +62,6 @@ RUN mv /p0f/p0fo.fp /opt/local
 RUN rm -fr /p0f/
 
 RUN rm p0f-2.0.8.tgz
-
-RUN pip3 install -r requirements.txt
 
 FROM zerotier/zerotier:1.8.7 AS zerotier
 
