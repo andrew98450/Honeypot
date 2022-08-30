@@ -12,9 +12,9 @@ RUN chmod +x start.sh
 
 RUN git clone https://github.com/johnnykv/heralding.git
 
-RUN pip3 install -r ./heralding/requirements.txt
+RUN pip3 install -r /heralding/requirements.txt
 
-RUN python3 ./heralding/setup.py install
+RUN python3 /heralding/setup.py install
 
 RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
