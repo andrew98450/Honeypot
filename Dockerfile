@@ -1,4 +1,4 @@
-FROM bltsec/mutillidae-docker:latest AS owasp
+FROM python:3.9.13-slim-buster AS python3
 
 WORKDIR /
 
@@ -6,12 +6,15 @@ COPY . ./
 
 RUN apt update
 
-RUN apt install -y net-tools nano wget cmake make git unzip tar libemu-dev libffi-dev libssl-dev \
- libgdbm-dev libsqlite3-dev zlib1g-dev iptables \
- python3 libpython3-dev python3-pip \
- apache2 mariadb-server php php-mysqli php-gd libapache2-mod-php
+RUN apt install -y net-tools nano wget cmake make git unzip tar build-essential libssl-dev libffi-dev
 
 RUN chmod +x start.sh
+
+RUN git clone https://github.com/johnnykv/heralding.git
+
+RUN pip3 install -r ./heralding/requirements.txt
+
+RUN pip3 install heralding
 
 RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
@@ -35,9 +38,7 @@ RUN pip3 install -r requirements.txt
 
 FROM zerotier/zerotier:1.8.7 AS zerotier
 
-COPY --from=owasp . ./
-
-EXPOSE 80 3306
+COPY --from=python3 . ./
 
 ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
