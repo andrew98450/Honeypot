@@ -6,7 +6,7 @@ COPY . ./
 
 RUN apt update
 
-RUN apt install -y net-tools nano wget cmake make git unzip tar build-essential libssl-dev libffi-dev
+RUN apt install -y net-tools nano wget cmake make git unzip tar libemu-dev build-essential libssl-dev libffi-dev
 
 RUN chmod +x start.sh
 
