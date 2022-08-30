@@ -1,7 +1,4 @@
 scapy
 pylibemu
 PyPTables
-bson
-PyYAML
-boto3
 firebase-admin

@@ -87,7 +87,7 @@ def shellcode_detect(packet : Packet, event_ref : db.Reference):
 
             ip_field = packet[IP]
             tcp_field = packet[TCP]
-            if packet.haslayer(Raw) and len(packet[Raw].original) > 0:
+            if packet.haslayer(Raw):
                 raw_field = packet[Raw]
                 payload = raw_field.original
                 src_ip = ip_field.src
