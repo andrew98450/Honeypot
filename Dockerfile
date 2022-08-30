@@ -72,5 +72,7 @@ FROM zerotier/zerotier:1.8.7 AS zerotier
 
 COPY --from=python3 . ./
 
+USER dionaea:dionaea
+
 ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
