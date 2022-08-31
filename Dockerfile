@@ -32,5 +32,5 @@ FROM zerotier/zerotier:1.8.7 AS zerotier
 
 COPY --from=python3 . ./
 
-ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "./start.sh"]
 
