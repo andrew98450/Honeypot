@@ -28,11 +28,7 @@ RUN chmod +x start.sh
 
 RUN git clone https://github.com/digininja/DVWA.git
 
-WORKDIR /DVWA/
-
-COPY . /var/www/html/
-
-WORKDIR /
+COPY /DVWA/ /var/www/html/
 
 RUN rm -fr /DVWA/
 
