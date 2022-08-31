@@ -1,1 +1,1 @@
-python3 /opt/honeypot/sniff.py
+python3 /opt/honeypot/sniff.py &
