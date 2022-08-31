@@ -4,7 +4,7 @@ COPY . ./
 
 RUN apt update
 
-RUN apt install iptables
+RUN apt install -y iptables
 
 RUN pip3 install -r requirements.txt
 
