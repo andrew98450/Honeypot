@@ -3,7 +3,7 @@ Description=honeypot daemon
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /opt/honeypot/sniff.py &
+ExecStart=/usr/bin/python3 /opt/honeypot/sniff.py
 KillSignal=SIGINT
 Restart=on-failure
 RestartSec=5
