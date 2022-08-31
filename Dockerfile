@@ -28,7 +28,7 @@ RUN rm -fr /p0f/
 
 RUN rm p0f-2.0.8.tgz
 
-FROM zerotier/zerotier:1.10.1 AS zerotier
+FROM zerotier/zerotier:1.8.7 AS zerotier
 
 COPY --from=python3 . ./
 
