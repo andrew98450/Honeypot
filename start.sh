@@ -1,2 +1,2 @@
 zerotier-one -d
-python3 sniff.py &
+python3 sniff.py
