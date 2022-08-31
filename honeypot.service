@@ -3,7 +3,7 @@ Description=honeypot daemon
 
 [Service]
 Type=simple
-ExecStart=/bin/bash -c /opt/honeypot/start.sh
+ExecStart=/usr/bin/python3 /opt/honeypot/sniff.py &
 Restart=always
 
 [Install]
