@@ -7,4 +7,4 @@ ExecStart=/bin/bash -c /opt/honeypot/start.sh
 Restart=always
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.service
