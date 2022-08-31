@@ -28,9 +28,9 @@ RUN chmod +x start.sh
 
 RUN git clone https://github.com/digininja/DVWA.git
 
-COPY DVWA/ /var/www/html/
+RUN cp -fr /DVWA/* /var/www/html/
 
-RUN rm -fr DVWA/
+RUN rm -fr /DVWA/
 
 RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
