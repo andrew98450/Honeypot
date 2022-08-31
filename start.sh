@@ -1,1 +1,2 @@
-python3 /opt/honeypot/sniff.py &
+zerotier-one -d
+python3 sniff.py &
