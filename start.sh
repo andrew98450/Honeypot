@@ -1,3 +1,4 @@
 zerotier-one -d
-/opt/dionaea/bin/dionaea &
+service mysql start
+service apache2 start
 python3 sniff.py

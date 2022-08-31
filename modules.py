@@ -137,7 +137,6 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
                     "protocol" : 'TCP',
                     "src_ip" : src_ip
                 })
-
 '''
 def arp_spoof_detect(packet : Packet, event_ref : db.Reference, iface : str):
     

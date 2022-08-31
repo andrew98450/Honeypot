@@ -11,44 +11,30 @@ RUN apt install -y \
     cython3 \
     libcurl4-openssl-dev \
     libemu-dev \
-    libev-dev \
-    libglib2.0-dev \
-    libloudmouth1-dev \
-    libnetfilter-queue-dev \
-    libnl-3-dev \
     libpcap-dev \
     libssl-dev \
-    libtool \
-    libudns-dev \
-    python3 \
-    python3-dev \
-    python3-bson \
-    python3-yaml \
-    python3-boto3 \
     fonts-liberation \
     tar unzip \
     libffi-dev \
     wget \
     make \
-    git nano net-tools
+    git nano \
+    net-tools iptables \
+    apache2 mariadb-server php php-mysqli php-gd libapache2-mod-php
 
 RUN pip3 install -r requirements.txt
 
 RUN chmod +x start.sh
 
-RUN git clone https://github.com/DinoTools/dionaea.git
+RUN git clone https://github.com/digininja/DVWA.git
 
-RUN mkdir /dionaea/build/
+WORKDIR /DVWA/
 
-WORKDIR /dionaea/build/
-
-RUN cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/dionaea ..
-
-RUN make
-
-RUN make install
+COPY . /var/www/html/
 
 WORKDIR /
+
+RUN rm -fr /DVWA/
 
 RUN wget https://lcamtuf.coredump.cx/p0f3/releases/old/2.x/p0f-2.0.8.tgz
 
@@ -71,6 +57,8 @@ RUN rm p0f-2.0.8.tgz
 FROM zerotier/zerotier:1.8.7 AS zerotier
 
 COPY --from=python3 . ./
+
+EXPOSE 80 3306
 
 ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
