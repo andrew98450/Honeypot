@@ -20,7 +20,6 @@ blacklist_ref = ref.child("blacklist")
 event_ref = ref.child("event")
 
 def init():
-    os.system("sysctl -w net.ipv4.ip_forward=1")
     os.system("iptables -t nat -F")
     os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 21 -j DNAT --to-destination %s:21" % (iface, nat_ip))
     os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 22 -j DNAT --to-destination %s:22" % (iface, nat_ip))
