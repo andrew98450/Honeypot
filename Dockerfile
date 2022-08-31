@@ -4,7 +4,7 @@ COPY . ./
 
 RUN apt update
 
-RUN apt install -y libemu-dev gcc iptables
+RUN apt install -y libemu-dev gcc wget tar iptables
 
 RUN pip3 install -r requirements.txt
 
