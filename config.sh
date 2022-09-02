@@ -3,7 +3,6 @@ DOCKER_IFACE=docker0
 NATIP=172.17.0.2
 
 sudo sysctl -p sysctl.conf
-sudo iptables -t nat -F
 sudo iptables -t nat -A PREROUTING -i $IFACE -p tcp --dport 21 -j DNAT --to-destination $NATIP:21
 sudo iptables -t nat -A PREROUTING -i $IFACE -p tcp --dport 22 -j DNAT --to-destination $NATIP:22
 sudo iptables -t nat -A PREROUTING -i $IFACE -p tcp --dport 23 -j DNAT --to-destination $NATIP:23
