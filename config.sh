@@ -40,5 +40,3 @@ sudo iptables -t nat -A POSTROUTING -o $DOCKER_IFACE -p tcp --dport 5432 --dst $
 sudo iptables -t nat -A POSTROUTING -o $DOCKER_IFACE -p tcp --dport 5900 --dst $NATIP -j MASQUERADE
 sudo iptables -t nat -A POSTROUTING -o $DOCKER_IFACE -p tcp --dport 6000 --dst $NATIP -j MASQUERADE
 sudo iptables-save
-
-sudo docker build -t honeypot .
