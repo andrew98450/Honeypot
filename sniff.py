@@ -1,5 +1,4 @@
 import firebase_admin
-import os
 import configparser
 from scapy.all import *
 from scapy.layers.inet import *
@@ -11,34 +10,12 @@ config = configparser.ConfigParser()
 config.read("setting.conf")
 iface = str(config.get("env", "iface"))
 cred_file = str(config.get("env", "cred"))
-nat_ip = str(config.get("env", "natip"))
 cred = credentials.Certificate(cred_file)
 firebase_admin.initialize_app(cred, {'databaseURL' : 'https://honeypot-349512-default-rtdb.firebaseio.com/'})
 ref = db.reference(path='/')
 connect_ref = ref.child("connect_info")
 blacklist_ref = ref.child("blacklist")
 event_ref = ref.child("event")
-
-def init():
-    os.system("iptables -t nat -F")
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 21 -j DNAT --to-destination %s:21" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 22 -j DNAT --to-destination %s:22" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 23 -j DNAT --to-destination %s:23" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 25 -j DNAT --to-destination %s:25" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p udp -s any/0 --dport 53 -j DNAT --to-destination %s:53" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 80 -j DNAT --to-destination %s:80" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 111 -j DNAT --to-destination %s:111" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 139 -j DNAT --to-destination %s:139" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 445 -j DNAT --to-destination %s:445" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 512 -j DNAT --to-destination %s:512" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 513 -j DNAT --to-destination %s:513" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 514 -j DNAT --to-destination %s:514" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 2049 -j DNAT --to-destination %s:2049" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 2121 -j DNAT --to-destination %s:2121" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 3306 -j DNAT --to-destination %s:3306" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 5432 -j DNAT --to-destination %s:5432" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 5900 -j DNAT --to-destination %s:5900" % (iface, nat_ip))
-    os.system("iptables -t nat -A PREROUTING -i %s -p tcp -s any/0 --dport 6000 -j DNAT --to-destination %s:6000" % (iface, nat_ip))
 
 def onSniff(packet : Packet):
     get_information(packet, ref)
@@ -51,5 +28,4 @@ def onSniff(packet : Packet):
     port_fin_scan_detect(packet, event_ref)
     shellcode_detect(packet, event_ref)
 
-init()
 sniff(iface=iface, prn=onSniff)
