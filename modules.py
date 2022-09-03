@@ -127,7 +127,7 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
         ip_field = packet.getlayer(IP)
         tcp_field = packet.getlayer(TCP)
         src_ip = ip_field.src
-        if tcp_field.flags & 2 and tcp_field.dport == 80:
+        if tcp_field.flags & 2:
             syn_table[src_ip] += 1
             if syn_table[src_ip] > 30 and tcp_field.ack == 0:
                 time_ref = event_ref.child(

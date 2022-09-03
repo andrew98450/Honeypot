@@ -4,7 +4,7 @@ COPY . ./
 
 RUN apt update
 
-RUN apt install -y libemu-dev net-tools nano gcc wget tar iptables
+RUN apt install -y net-tools nano gcc wget tar iptables
 
 RUN pip3 install -r requirements.txt
 
