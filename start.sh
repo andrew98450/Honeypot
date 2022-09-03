@@ -1,7 +1,7 @@
 IFACE=ztkse4hw57
 NATIP=172.17.0.2
 
-sudo sysctl -p sysctl.conf
+sudo sysctl -p /opt/honeypot/sysctl.conf
 sudo iptables -t nat -A PREROUTING -i $IFACE -p tcp --dport 21 --tcp-flags ALL ALL -j DNAT --to-destination $NATIP:21
 sudo iptables -t nat -A PREROUTING -i $IFACE -p tcp --dport 22 --tcp-flags ALL ALL -j DNAT --to-destination $NATIP:22
 sudo iptables -t nat -A PREROUTING -i $IFACE -p tcp --dport 23 --tcp-flags ALL ALL -j DNAT --to-destination $NATIP:23
@@ -58,4 +58,4 @@ sudo iptables -A FORWARD -p tcp --dport 5432 --tcp-flags ALL ALL -j ACCEPT
 sudo iptables -A FORWARD -p tcp --dport 5900 --tcp-flags ALL ALL -j ACCEPT
 sudo iptables -A FORWARD -p tcp --dport 6000 --tcp-flags ALL ALL -j ACCEPT
 
-sudo python3 sniff.py
+sudo python3 /opt/honeypot/sniff.py

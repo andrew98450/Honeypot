@@ -1,0 +1,10 @@
+[Unit]
+Description=honeypot daemon
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c /opt/honeypot/start.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
