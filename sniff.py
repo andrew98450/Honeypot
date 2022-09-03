@@ -8,7 +8,7 @@ from firebase_admin import db
 from modules import *
 
 config = configparser.ConfigParser()
-config.read("setting.conf")
+config.read("/opt/honeypot/setting.conf")
 iface = str(config.get("env", "iface"))
 cred_file = str(config.get("env", "cred"))
 nat_ip = str(config.get("env", "natip"))
