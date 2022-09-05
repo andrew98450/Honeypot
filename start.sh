@@ -58,4 +58,4 @@ sudo iptables -A FORWARD -p tcp --dport 5432 -j ACCEPT
 sudo iptables -A FORWARD -p tcp --dport 5900 -j ACCEPT
 sudo iptables -A FORWARD -p tcp --dport 6000 -j ACCEPT
 
-sudo python3 /opt/honeypot/sniff.py
+sudo python3 sniff.py

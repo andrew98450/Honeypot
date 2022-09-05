@@ -7,7 +7,6 @@ from scapy.layers.http import *
 from scapy.layers.dns import *
 from scapy.layers.inet import *
 from scapy.layers.l2 import *
-from scapy.layers.tftp import *
 from scapy.modules.p0f import *
 from firebase_admin import db
 from protocol import Protocol
@@ -128,7 +127,10 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
         tcp_field = packet.getlayer(TCP)
         src_ip = ip_field.src
         if tcp_field.flags & 2:
-            syn_table[src_ip] += 1
+            if src_ip not in syn_table.keys():
+                syn_table[src_ip] = 1
+            else:
+                syn_table[src_ip] += 1
             if syn_table[src_ip] > 30 and tcp_field.ack == 0:
                 time_ref = event_ref.child(
                     str(int(time.time())))
