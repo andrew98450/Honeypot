@@ -12,9 +12,12 @@ from firebase_admin import db
 from protocol import Protocol
 from pylibemu import Emulator
 
-ports = {21 : Protocol.FTP, 23 : Protocol.TELNET, 53 : Protocol.DNS, 
-    80 : Protocol.HTTP, 443 : Protocol.HTTPS, 445 : Protocol.SMB,
-    1433: Protocol.MSSQL, 3306: Protocol.MYSQL}
+ports = {21 : Protocol.FTP, 22: Protocol.SSH, 23 : Protocol.TELNET,
+    25: Protocol.SMTP, 53 : Protocol.DNS, 80 : Protocol.HTTP, 
+    111: Protocol.RPCBIND, 139: Protocol.NETBIOS, 445 : Protocol.SMB,
+    512: Protocol.EXEC, 513: Protocol.LOGIN, 514: Protocol.SHELL,
+    2121: Protocol.CCPROXY, 3306: Protocol.MYSQL, 5900: Protocol.VNC,
+    6000: Protocol.X11}
 emu = Emulator()
 tables = default_tables()
 syn_table = dict()
@@ -97,18 +100,34 @@ def shellcode_detect(packet : Packet, event_ref : db.Reference):
                     protocol = 'ftp'
                 elif ports[target_port] == Protocol.TELNET:
                     protocol = 'telnet'
+                elif ports[target_port] == Protocol.SMTP:
+                    protocol = 'smtp'
                 elif ports[target_port] == Protocol.DNS:
                     protocol = 'dns'
                 elif ports[target_port] == Protocol.HTTP:
                     protocol = 'http'
-                elif ports[target_port] == Protocol.HTTPS:
-                    protocol = 'https'
+                elif ports[target_port] == Protocol.RPCBIND:
+                    protocol = 'rpcbind'
+                elif ports[target_port] == Protocol.NETBIOS:
+                    protocol = 'netbios'
                 elif ports[target_port] == Protocol.SMB:
                     protocol = 'smb'
-                elif ports[target_port] == Protocol.MSSQL:
-                    protocol = 'mssql'
+                elif ports[target_port] == Protocol.EXEC:
+                    protocol = 'exec'
+                elif ports[target_port] == Protocol.LOGIN:
+                    protocol = 'login'
+                elif ports[target_port] == Protocol.SHELL:
+                    protocol = 'shell'
+                elif ports[target_port] == Protocol.CCPROXY:
+                    protocol = 'ccproxy'
                 elif ports[target_port] == Protocol.MYSQL:
                     protocol = 'mysql'
+                elif ports[target_port] == Protocol.POSTGRESQL:
+                    protocol = 'postgresql'
+                elif ports[target_port] == Protocol.VNC:
+                    protocol = 'vnc'
+                elif ports[target_port] == Protocol.X11:
+                    protocol = 'x11'
 
                 offset = emu.shellcode_getpc_test(payload)
                 if offset is not None and offset >= 0:
@@ -126,6 +145,41 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
         ip_field = packet.getlayer(IP)
         tcp_field = packet.getlayer(TCP)
         src_ip = ip_field.src
+        target_port = tcp_field.dport
+        if target_port not in ports.keys():
+            protocol = 'other'
+        elif ports[target_port] == Protocol.FTP:
+            protocol = 'ftp'
+        elif ports[target_port] == Protocol.TELNET:
+            protocol = 'telnet'
+        elif ports[target_port] == Protocol.SMTP:
+            protocol = 'smtp'
+        elif ports[target_port] == Protocol.DNS:
+            protocol = 'dns'
+        elif ports[target_port] == Protocol.HTTP:
+            protocol = 'http'
+        elif ports[target_port] == Protocol.RPCBIND:
+            protocol = 'rpcbind'
+        elif ports[target_port] == Protocol.NETBIOS:
+            protocol = 'netbios'
+        elif ports[target_port] == Protocol.SMB:
+            protocol = 'smb'
+        elif ports[target_port] == Protocol.EXEC:
+            protocol = 'exec'
+        elif ports[target_port] == Protocol.LOGIN:
+            protocol = 'login'
+        elif ports[target_port] == Protocol.SHELL:
+            protocol = 'shell'
+        elif ports[target_port] == Protocol.CCPROXY:
+            protocol = 'ccproxy'
+        elif ports[target_port] == Protocol.MYSQL:
+            protocol = 'mysql'
+        elif ports[target_port] == Protocol.POSTGRESQL:
+            protocol = 'postgresql'
+        elif ports[target_port] == Protocol.VNC:
+            protocol = 'vnc'
+        elif ports[target_port] == Protocol.X11:
+            protocol = 'x11'
         if tcp_field.flags & 2:
             if src_ip not in syn_table.keys():
                 syn_table[src_ip] = 1
@@ -136,7 +190,7 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
                     str(int(time.time())))
                 time_ref.update({
                     "event_type" : "Syn Flood",
-                    "protocol" : 'TCP',
+                    "protocol" : protocol,
                     "src_ip" : src_ip
                 })
 '''
@@ -164,7 +218,7 @@ def arp_spoof_detect(packet : Packet, event_ref : db.Reference, iface : str):
                 })
 '''
 
-def dns_fuzz_detect(packet : Packet, event_ref : db.Reference, iface : str):
+def dns_fuzz_detect(packet : Packet, event_ref : db.Reference):
     if packet.haslayer(IP) and packet.haslayer(UDP) and packet.haslayer(DNS):
         ip_field = packet[IP]
         udp_field = packet[UDP]
@@ -224,18 +278,34 @@ def port_xmas_scan_detect(packet : Packet, event_ref : db.Reference):
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
+            elif ports[target_port] == Protocol.SMTP:
+                protocol = 'smtp'
             elif ports[target_port] == Protocol.DNS:
                 protocol = 'dns'
             elif ports[target_port] == Protocol.HTTP:
                 protocol = 'http'
-            elif ports[target_port] == Protocol.HTTPS:
-                protocol = 'https'
+            elif ports[target_port] == Protocol.RPCBIND:
+                protocol = 'rpcbind'
+            elif ports[target_port] == Protocol.NETBIOS:
+                protocol = 'netbios'
             elif ports[target_port] == Protocol.SMB:
                 protocol = 'smb'
-            elif ports[target_port] == Protocol.MSSQL:
-                protocol = 'mssql'
+            elif ports[target_port] == Protocol.EXEC:
+                protocol = 'exec'
+            elif ports[target_port] == Protocol.LOGIN:
+                protocol = 'login'
+            elif ports[target_port] == Protocol.SHELL:
+                protocol = 'shell'
+            elif ports[target_port] == Protocol.CCPROXY:
+                protocol = 'ccproxy'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
+            elif ports[target_port] == Protocol.POSTGRESQL:
+                protocol = 'postgresql'
+            elif ports[target_port] == Protocol.VNC:
+                protocol = 'vnc'
+            elif ports[target_port] == Protocol.X11:
+                protocol = 'x11'
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({
@@ -258,18 +328,34 @@ def port_fin_scan_detect(packet : Packet, event_ref : db.Reference):
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
+            elif ports[target_port] == Protocol.SMTP:
+                protocol = 'smtp'
             elif ports[target_port] == Protocol.DNS:
                 protocol = 'dns'
             elif ports[target_port] == Protocol.HTTP:
                 protocol = 'http'
-            elif ports[target_port] == Protocol.HTTPS:
-                protocol = 'https'
+            elif ports[target_port] == Protocol.RPCBIND:
+                protocol = 'rpcbind'
+            elif ports[target_port] == Protocol.NETBIOS:
+                protocol = 'netbios'
             elif ports[target_port] == Protocol.SMB:
                 protocol = 'smb'
-            elif ports[target_port] == Protocol.MSSQL:
-                protocol = 'mssql'
+            elif ports[target_port] == Protocol.EXEC:
+                protocol = 'exec'
+            elif ports[target_port] == Protocol.LOGIN:
+                protocol = 'login'
+            elif ports[target_port] == Protocol.SHELL:
+                protocol = 'shell'
+            elif ports[target_port] == Protocol.CCPROXY:
+                protocol = 'ccproxy'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
+            elif ports[target_port] == Protocol.POSTGRESQL:
+                protocol = 'postgresql'
+            elif ports[target_port] == Protocol.VNC:
+                protocol = 'vnc'
+            elif ports[target_port] == Protocol.X11:
+                protocol = 'x11'
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({
@@ -292,18 +378,34 @@ def port_null_scan_detect(packet : Packet, event_ref : db.Reference):
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
+            elif ports[target_port] == Protocol.SMTP:
+                protocol = 'smtp'
             elif ports[target_port] == Protocol.DNS:
                 protocol = 'dns'
             elif ports[target_port] == Protocol.HTTP:
                 protocol = 'http'
-            elif ports[target_port] == Protocol.HTTPS:
-                protocol = 'https'
+            elif ports[target_port] == Protocol.RPCBIND:
+                protocol = 'rpcbind'
+            elif ports[target_port] == Protocol.NETBIOS:
+                protocol = 'netbios'
             elif ports[target_port] == Protocol.SMB:
                 protocol = 'smb'
-            elif ports[target_port] == Protocol.MSSQL:
-                protocol = 'mssql'
+            elif ports[target_port] == Protocol.EXEC:
+                protocol = 'exec'
+            elif ports[target_port] == Protocol.LOGIN:
+                protocol = 'login'
+            elif ports[target_port] == Protocol.SHELL:
+                protocol = 'shell'
+            elif ports[target_port] == Protocol.CCPROXY:
+                protocol = 'ccproxy'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
+            elif ports[target_port] == Protocol.POSTGRESQL:
+                protocol = 'postgresql'
+            elif ports[target_port] == Protocol.VNC:
+                protocol = 'vnc'
+            elif ports[target_port] == Protocol.X11:
+                protocol = 'x11'
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({
@@ -326,18 +428,34 @@ def port_ack_scan_detect(packet : Packet, event_ref : db.Reference):
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
+            elif ports[target_port] == Protocol.SMTP:
+                protocol = 'smtp'
             elif ports[target_port] == Protocol.DNS:
                 protocol = 'dns'
             elif ports[target_port] == Protocol.HTTP:
                 protocol = 'http'
-            elif ports[target_port] == Protocol.HTTPS:
-                protocol = 'https'
+            elif ports[target_port] == Protocol.RPCBIND:
+                protocol = 'rpcbind'
+            elif ports[target_port] == Protocol.NETBIOS:
+                protocol = 'netbios'
             elif ports[target_port] == Protocol.SMB:
                 protocol = 'smb'
-            elif ports[target_port] == Protocol.MSSQL:
-                protocol = 'mssql'
+            elif ports[target_port] == Protocol.EXEC:
+                protocol = 'exec'
+            elif ports[target_port] == Protocol.LOGIN:
+                protocol = 'login'
+            elif ports[target_port] == Protocol.SHELL:
+                protocol = 'shell'
+            elif ports[target_port] == Protocol.CCPROXY:
+                protocol = 'ccproxy'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
+            elif ports[target_port] == Protocol.POSTGRESQL:
+                protocol = 'postgresql'
+            elif ports[target_port] == Protocol.VNC:
+                protocol = 'vnc'
+            elif ports[target_port] == Protocol.X11:
+                protocol = 'x11'
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({
@@ -360,18 +478,34 @@ def sniffPacket(packet : Packet, time_ref : db.Reference):
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
+            elif ports[target_port] == Protocol.SMTP:
+                protocol = 'smtp'
             elif ports[target_port] == Protocol.DNS:
                 protocol = 'dns'
             elif ports[target_port] == Protocol.HTTP:
                 protocol = 'http'
-            elif ports[target_port] == Protocol.HTTPS:
-                protocol = 'https'
+            elif ports[target_port] == Protocol.RPCBIND:
+                protocol = 'rpcbind'
+            elif ports[target_port] == Protocol.NETBIOS:
+                protocol = 'netbios'
             elif ports[target_port] == Protocol.SMB:
                 protocol = 'smb'
-            elif ports[target_port] == Protocol.MSSQL:
-                protocol = 'mssql'
+            elif ports[target_port] == Protocol.EXEC:
+                protocol = 'exec'
+            elif ports[target_port] == Protocol.LOGIN:
+                protocol = 'login'
+            elif ports[target_port] == Protocol.SHELL:
+                protocol = 'shell'
+            elif ports[target_port] == Protocol.CCPROXY:
+                protocol = 'ccproxy'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
+            elif ports[target_port] == Protocol.POSTGRESQL:
+                protocol = 'postgresql'
+            elif ports[target_port] == Protocol.VNC:
+                protocol = 'vnc'
+            elif ports[target_port] == Protocol.X11:
+                protocol = 'x11'
             time_ref.update({
                 'protocol' : protocol,
                 'ttl' : ip_field.ttl,
@@ -391,18 +525,34 @@ def sniffPacket(packet : Packet, time_ref : db.Reference):
                 protocol = 'ftp'
             elif ports[target_port] == Protocol.TELNET:
                 protocol = 'telnet'
+            elif ports[target_port] == Protocol.SMTP:
+                protocol = 'smtp'
             elif ports[target_port] == Protocol.DNS:
                 protocol = 'dns'
             elif ports[target_port] == Protocol.HTTP:
                 protocol = 'http'
-            elif ports[target_port] == Protocol.HTTPS:
-                protocol = 'https'
+            elif ports[target_port] == Protocol.RPCBIND:
+                protocol = 'rpcbind'
+            elif ports[target_port] == Protocol.NETBIOS:
+                protocol = 'netbios'
             elif ports[target_port] == Protocol.SMB:
                 protocol = 'smb'
-            elif ports[target_port] == Protocol.MSSQL:
-                protocol = 'mssql'
+            elif ports[target_port] == Protocol.EXEC:
+                protocol = 'exec'
+            elif ports[target_port] == Protocol.LOGIN:
+                protocol = 'login'
+            elif ports[target_port] == Protocol.SHELL:
+                protocol = 'shell'
+            elif ports[target_port] == Protocol.CCPROXY:
+                protocol = 'ccproxy'
             elif ports[target_port] == Protocol.MYSQL:
                 protocol = 'mysql'
+            elif ports[target_port] == Protocol.POSTGRESQL:
+                protocol = 'postgresql'
+            elif ports[target_port] == Protocol.VNC:
+                protocol = 'vnc'
+            elif ports[target_port] == Protocol.X11:
+                protocol = 'x11'
             time_ref.update({
                 'protocol' : protocol,
                 'ttl' : ip_field.ttl,
