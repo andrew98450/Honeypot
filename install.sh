@@ -1,6 +1,6 @@
 apt install python3 python3-pip autoconf git unzip net-tools nano gcc wget tar iptables curl libtool
-unzip libemu-1.0.4.zip
-cd libemu-1.0.4
+git clone https://github.com/buffer/libemu.git
+cd libemu
 autoreconf -v -i
 ./configure
 make
@@ -20,3 +20,4 @@ rm p0f-2.0.8.tgz
 mkdir /opt/honeypot/
 cp -fr * /opt/honeypot/
 cp honeypot.service /etc/systemd/system/
+ldconfig
