@@ -1,6 +1,6 @@
-apt install python3 python3-pip autoconf git net-tools nano gcc wget tar iptables curl libtool
-git clone https://github.com/buffer/libemu.git
-cd libemu
+apt install python3 python3-pip autoconf git unzip net-tools nano gcc wget tar iptables curl libtool
+unzip libemu-1.0.4.zip
+cd libemu-1.0.4
 autoreconf -v -i
 ./configure
 make
