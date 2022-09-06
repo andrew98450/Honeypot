@@ -28,6 +28,6 @@ def onSniff(packet : Packet):
     port_xmas_scan_detect(packet, event_ref)
     port_null_scan_detect(packet, event_ref)
     port_fin_scan_detect(packet, event_ref)
-    port_ack_scan_detect(packet, event_ref)
+    #port_ack_scan_detect(packet, event_ref)
 
 sniff(iface=iface, prn=onSniff)
