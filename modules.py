@@ -466,7 +466,7 @@ def port_ack_scan_detect(packet : Packet, event_ref : db.Reference):
                 "src_ip" : ip_field.src
             })
 
-def sniffPacket(packet : Packet, time_ref : db.Reference):
+def sniffPacket(packet : Packet, connect_ref : db.Reference):
     if packet.haslayer(IP):
         if packet.haslayer(TCP):
             ip_field = packet.getlayer(IP)
@@ -506,6 +506,7 @@ def sniffPacket(packet : Packet, time_ref : db.Reference):
                 protocol = 'vnc'
             elif ports[target_port] == Protocol.X11:
                 protocol = 'x11'
+            time_ref = connect_ref.child(str(int(time.time())))
             time_ref.update({
                 'protocol' : protocol,
                 'ttl' : ip_field.ttl,
@@ -553,6 +554,7 @@ def sniffPacket(packet : Packet, time_ref : db.Reference):
                 protocol = 'vnc'
             elif ports[target_port] == Protocol.X11:
                 protocol = 'x11'
+            time_ref = connect_ref.child(str(int(time.time())))
             time_ref.update({
                 'protocol' : protocol,
                 'ttl' : ip_field.ttl,
