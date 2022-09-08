@@ -27,7 +27,7 @@ def onSniff(packet : Packet):
     port_null_scan_detect(packet, event_ref)
     port_fin_scan_detect(packet, event_ref)
     dns_fuzz_detect(packet, event_ref)
-    sniffPacket(packet, connect_ref)\
+    sniffPacket(packet, connect_ref)
     #port_tcp_scan_detect(packet, event_ref)
     #arp_spoof_detect(packet, event_ref, iface)
     #port_ack_scan_detect(packet, event_ref)
