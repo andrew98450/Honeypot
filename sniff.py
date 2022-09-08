@@ -22,12 +22,14 @@ def onSniff(packet : Packet):
     get_information(packet, ref)
     filter_blacklist(packet, blacklist_ref, iface)
     shellcode_detect(packet, event_ref)
-    #arp_spoof_detect(packet, event_ref, iface)
     syn_flood_detect(packet, event_ref)
-    #port_tcp_scan_detect(packet, event_ref)
     port_xmas_scan_detect(packet, event_ref)
     port_null_scan_detect(packet, event_ref)
     port_fin_scan_detect(packet, event_ref)
+    dns_fuzz_detect(packet, event_ref)
+    sniffPacket(packet, connect_ref)\
+    #port_tcp_scan_detect(packet, event_ref)
+    #arp_spoof_detect(packet, event_ref, iface)
     #port_ack_scan_detect(packet, event_ref)
 
 sniff(iface=iface, prn=onSniff)
