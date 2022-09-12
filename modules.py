@@ -47,9 +47,9 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
             accept_rule = Accept(i=iface, s=src_ip, dport=str(target_port), proto='tcp')
             if src_ip in filted_table.keys():
-                inputs.append(accept_rule)
                 inputs.remove(filted_table[src_ip][target_port])
                 filted_table.pop(src_ip)
+            inputs.append(accept_rule)
         restore(tables)
         pickle.dump(filted_table, open('blacktable.filter', 'wb'))
     elif packet.haslayer(IP) and packet.haslayer(UDP):
@@ -67,9 +67,9 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         if src_ip.replace('.', '-') not in blacklist.keys():
             accept_rule = Accept(i=iface, s=src_ip, dport=str(target_port), proto='tcp')
             if src_ip in filted_table.keys():
-                inputs.append(accept_rule)
                 inputs.remove(filted_table[src_ip][target_port])
                 filted_table.pop(src_ip)
+            inputs.append(accept_rule)
         restore(tables)
         pickle.dump(filted_table, open('blacktable.filter', 'wb'))
 
