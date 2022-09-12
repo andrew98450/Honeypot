@@ -31,7 +31,6 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
     if blacklist is None:
         blacklist = dict()
     os.system("sudo iptables -F")
-    os.system("sudo iptables-restore < /opt/honeypot/iptables.conf")
     if packet.haslayer(IP):
         ip_field = packet[IP]
         src_ip = str(ip_field.src)
