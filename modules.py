@@ -21,28 +21,24 @@ ports = {21 : Protocol.FTP, 22: Protocol.SSH, 23 : Protocol.TELNET,
 emu = Emulator()
 syn_table = dict()
 
+if not os.path.exists('blacktable.filter'):
+    filted_table = dict()
+else:
+    filted_table = pickle.load(open('blacktable.filter', 'rb'))
+
 def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str):
     blacklist = blacklist_ref.get()
     if blacklist is None:
         blacklist = dict()
-    if packet.haslayer(IP) and packet.haslayer(TCP):
+    os.system("sudo iptables -F")
+    os.system("sudo iptables-restore < /opt/honeypot/iptables.conf")
+    if packet.haslayer(IP):
         ip_field = packet[IP]
-        tcp_field = packet[TCP]
         src_ip = str(ip_field.src)
-        target_port = tcp_field.dport
-        if src_ip.replace('.', '-') in blacklist.keys() and tcp_field.flags == 0x02:
-            os.system("sudo iptables -A INPUT -p tcp -i %s -s %s --dport %d -j DROP" % (iface, src_ip, target_port))
-        if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
-            os.system("sudo iptables -A INPUT -p tcp -i %s -s %s --dport %d -j ACCEPT" % (iface, src_ip, target_port))
-    elif packet.haslayer(IP) and packet.haslayer(UDP):
-        ip_field = packet[IP]
-        udp_field = packet[UDP]
-        src_ip = str(ip_field.src)
-        target_port = udp_field.dport
         if src_ip.replace('.', '-') in blacklist.keys():
-            os.system("sudo iptables -A INPUT -p udp -i %s -s %s --dport %d -j DROP" % (iface, src_ip, target_port))
+            os.system("sudo iptables -A INPUT -s %s -j DROP" % src_ip)
         if src_ip.replace('.', '-') not in blacklist.keys():
-            os.system("sudo iptables -A INPUT -p udp -i %s -s %s --dport %d -j ACCEPT" % (iface, src_ip, target_port))
+            os.system("sudo iptables -A INPUT -s %s -j ACCEPT" % src_ip)
 
 def get_information(packet : Packet, ref : db.Reference):
     info_ref = ref.child('info')
@@ -444,11 +440,13 @@ def port_ack_scan_detect(packet : Packet, event_ref : db.Reference):
             })
 
 def sniffPacket(packet : Packet, connect_ref : db.Reference):
+    protocol = ''
     if packet.haslayer(IP):
         if packet.haslayer(TCP):
             ip_field = packet.getlayer(IP)
             tcp_field = packet.getlayer(TCP)
             target_port = tcp_field.dport
+           
             if target_port not in ports.keys():
                 protocol = 'other'
             elif ports[target_port] == Protocol.FTP:
