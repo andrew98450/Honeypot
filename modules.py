@@ -19,7 +19,7 @@ ports = {21 : Protocol.FTP, 22: Protocol.SSH, 23 : Protocol.TELNET,
     2121: Protocol.CCPROXY, 3306: Protocol.MYSQL, 5900: Protocol.VNC,
     6000: Protocol.X11}
 emu = Emulator()
-tables = Tables()
+tables = default_tables()
 syn_table = dict()
 
 if not os.path.exists('blacktable.filter'):
