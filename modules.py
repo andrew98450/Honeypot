@@ -30,14 +30,18 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
     blacklist = blacklist_ref.get()
     if blacklist is None:
         blacklist = dict()
-    if packet.haslayer(IP):
+    if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet[IP]
+        tcp_field = packet[TCP]
         src_ip = str(ip_field.src)
+        target_port = str(tcp_field.dport)
         if src_ip.replace('.', '-') in blacklist.keys():
-            os.system("sudo iptables -A INPUT -s %s -j DROP" % src_ip)
+            os.system("sudo iptables -A INPUT -i %s -p tcp -s %s --dport %d -j DROP" 
+                % (iface, src_ip, target_port))
             filted_table.append(src_ip)
         if src_ip.replace('.', '-') not in blacklist.keys():
-            os.system("sudo iptables -R INPUT %d -s %s -j ACCEPT" % (filted_table.index(src_ip) + 1, src_ip))
+            os.system("sudo iptables -R INPUT %d -i %s -p tcp -s %s --dport %d -j ACCEPT" 
+                % (filted_table.index(src_ip) + 1, iface, src_ip, target_port))
             filted_table.remove(src_ip)
         pickle.dump(filted_table, open('blacktable.filter', 'wb'))
 
