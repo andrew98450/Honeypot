@@ -40,7 +40,6 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
             os.system("sudo iptables -R INPUT %d -s %s -j ACCEPT" % (filted_table.index(src_ip) + 1, src_ip))
             filted_table.remove(src_ip)
         pickle.dump(filted_table, open('blacktable.filter', 'wb'))
-        
 def get_information(packet : Packet, ref : db.Reference):
     info_ref = ref.child('info')
    
