@@ -45,7 +45,9 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
                 filted_table[src_ip][target_port] = drop_rule
             inputs.append(drop_rule)
         if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
+            accept_rule = Accept(i=iface, s=src_ip, dport=str(target_port), proto='tcp')
             if src_ip in filted_table.keys():
+                inputs.append(accept_rule)
                 inputs.remove(filted_table[src_ip][target_port])
                 filted_table.pop(src_ip)
         restore(tables)
@@ -63,7 +65,9 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
                 filted_table[src_ip][target_port] = drop_rule
             inputs.append(drop_rule)
         if src_ip.replace('.', '-') not in blacklist.keys():
+            accept_rule = Accept(i=iface, s=src_ip, dport=str(target_port), proto='tcp')
             if src_ip in filted_table.keys():
+                inputs.append(accept_rule)
                 inputs.remove(filted_table[src_ip][target_port])
                 filted_table.pop(src_ip)
         restore(tables)
