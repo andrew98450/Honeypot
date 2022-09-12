@@ -21,7 +21,7 @@ ports = {21 : Protocol.FTP, 22: Protocol.SSH, 23 : Protocol.TELNET,
 emu = Emulator()
 syn_table = dict()
 
-def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str):
+def filter_blacklist(packet : Packet, blacklist_ref : db.Reference):
     blacklist = blacklist_ref.get()
     if blacklist is None:
         blacklist = dict()
@@ -29,20 +29,18 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         ip_field = packet[IP]
         tcp_field = packet[TCP]
         src_ip = str(ip_field.src)
-        target_port = tcp_field.dport
         if src_ip.replace('.', '-') in blacklist.keys() and tcp_field.flags == 0x02:
-            os.system("sudo iptables -A INPUT -p tcp -i %s -s %s --dport %d -j DROP" % (iface, src_ip, target_port))
+            os.system("sudo iptables -A INPUT -s %s -j DROP" % src_ip)
         if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
-            os.system("sudo iptables -A INPUT -p tcp -i %s -s %s --dport %d -j ACCEPT" % (iface, src_ip, target_port))
+            os.system("sudo iptables -A INPUT -s %s -j ACCEPT" % src_ip)
     elif packet.haslayer(IP) and packet.haslayer(UDP):
         ip_field = packet[IP]
         udp_field = packet[UDP]
         src_ip = str(ip_field.src)
-        target_port = udp_field.dport
         if src_ip.replace('.', '-') in blacklist.keys():
-            os.system("sudo iptables -A INPUT -p udp -i %s -s %s --dport %d -j DROP" % (iface, src_ip, target_port))
+            os.system("sudo iptables -A INPUT -s %s -j DROP" % src_ip)
         if src_ip.replace('.', '-') not in blacklist.keys():
-            os.system("sudo iptables -A INPUT -p udp -i %s -s %s --dport %d -j ACCEPT" % (iface, src_ip, target_port))
+            os.system("sudo iptables -A INPUT -s %s -j ACCEPT" % src_ip)
 
 def get_information(packet : Packet, ref : db.Reference):
     info_ref = ref.child('info')
