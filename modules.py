@@ -1,6 +1,5 @@
-import pickle
+import os
 import time
-from pyptables import *
 from scapy.all import *
 from scapy.layers.all import *
 from scapy.layers.http import *
@@ -19,59 +18,30 @@ ports = {21 : Protocol.FTP, 22: Protocol.SSH, 23 : Protocol.TELNET,
     2121: Protocol.CCPROXY, 3306: Protocol.MYSQL, 5900: Protocol.VNC,
     6000: Protocol.X11}
 emu = Emulator()
-tables = default_tables()
 syn_table = dict()
-
-if not os.path.exists('blacktable.filter'):
-    filted_table = dict()
-else:
-    filted_table = pickle.load(open('blacktable.filter', 'rb'))
 
 def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str):
     blacklist = blacklist_ref.get()
     if blacklist is None:
         blacklist = dict()
-    inputs = tables['filter']['INPUT']
     if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet[IP]
         tcp_field = packet[TCP]
         src_ip = str(ip_field.src)
         target_port = tcp_field.dport
         if src_ip.replace('.', '-') in blacklist.keys() and tcp_field.flags == 0x02:
-            drop_rule = Drop(i=iface, s=src_ip, dport=str(target_port), proto='tcp')
-            if src_ip not in filted_table.keys():
-                filted_table[src_ip] = {target_port: drop_rule}
-            if src_ip in filted_table.keys() and target_port not in filted_table[src_ip].keys():
-                filted_table[src_ip][target_port] = drop_rule
-            inputs.append(drop_rule)
+            os.system("sudo iptables -A INPUT -p tcp --dport %d -j DROP" % target_port)
         if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
-            accept_rule = Accept(i=iface, s=src_ip, dport=str(target_port), proto='tcp')
-            if src_ip in filted_table.keys():
-                inputs.remove(filted_table[src_ip][target_port])
-                filted_table.pop(src_ip)
-            inputs.append(accept_rule)
-        restore(tables)
-        pickle.dump(filted_table, open('blacktable.filter', 'wb'))
+            os.system("sudo iptables -A INPUT -p tcp --dport %d -j ACCEPT" % target_port)
     elif packet.haslayer(IP) and packet.haslayer(UDP):
         ip_field = packet[IP]
         udp_field = packet[UDP]
         src_ip = str(ip_field.src)
         target_port = udp_field.dport
         if src_ip.replace('.', '-') in blacklist.keys():
-            drop_rule = Drop(i=iface, s=src_ip, dport=str(target_port), proto='udp')
-            if src_ip not in filted_table.keys():
-                filted_table[src_ip] = {target_port: drop_rule}
-            if src_ip in filted_table.keys() and target_port not in filted_table[src_ip].keys():
-                filted_table[src_ip][target_port] = drop_rule
-            inputs.append(drop_rule)
+            os.system("sudo iptables -A INPUT -p udp --dport %d -j DROP" % target_port)
         if src_ip.replace('.', '-') not in blacklist.keys():
-            accept_rule = Accept(i=iface, s=src_ip, dport=str(target_port), proto='tcp')
-            if src_ip in filted_table.keys():
-                inputs.remove(filted_table[src_ip][target_port])
-                filted_table.pop(src_ip)
-            inputs.append(accept_rule)
-        restore(tables)
-        pickle.dump(filted_table, open('blacktable.filter', 'wb'))
+            os.system("sudo iptables -A INPUT -p udp --dport %d -j ACCEPT" % target_port)
 
 def get_information(packet : Packet, ref : db.Reference):
     info_ref = ref.child('info')
@@ -186,9 +156,11 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
             protocol = 'x11'
         if tcp_field.flags & 2:
             if src_ip not in syn_table.keys():
-                syn_table[src_ip] = 1
+                if tcp_field.ack != 1:
+                    syn_table[src_ip] = 1
             else:
-                syn_table[src_ip] += 1
+                if tcp_field.ack != 1:
+                    syn_table[src_ip] += 1
             if syn_table[src_ip] > 30 and tcp_field.ack == 0:
                 time_ref = event_ref.child(
                     str(int(time.time())))
