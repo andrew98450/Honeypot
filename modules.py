@@ -223,7 +223,7 @@ def dns_fuzz_detect(packet : Packet, event_ref : db.Reference):
         ip_field = packet[IP]
         udp_field = packet[UDP]
         dns_field = packet[DNS]
-        if udp_field.dport == 53 and dns_field.qd is not None and dns_field.an is not None:
+        if udp_field.dport == 53 and type(dns_field.qd) is not None and type(dns_field.an) is not None:
             time_ref = event_ref.child(
                 str(int(time.time())))
             time_ref.update({

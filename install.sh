@@ -2,9 +2,7 @@ apt install python3 python3-pip autoconf git unzip net-tools nano gcc wget tar i
 git clone https://github.com/buffer/libemu.git
 cd libemu
 autoreconf -v -i
-./configure
-make
-make install
+./configure && make && make install
 cd ..
 pip3 install -r requirements.txt
 chmod +x start.sh
