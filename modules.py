@@ -471,11 +471,13 @@ def port_ack_scan_detect(packet : Packet, event_ref : db.Reference):
             })
 
 def sniffPacket(packet : Packet, connect_ref : db.Reference):
+    protocol = ''
     if packet.haslayer(IP):
         if packet.haslayer(TCP):
             ip_field = packet.getlayer(IP)
             tcp_field = packet.getlayer(TCP)
             target_port = tcp_field.dport
+           
             if target_port not in ports.keys():
                 protocol = 'other'
             elif ports[target_port] == Protocol.FTP:
