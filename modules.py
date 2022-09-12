@@ -34,7 +34,7 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         ip_field = packet[IP]
         tcp_field = packet[TCP]
         src_ip = str(ip_field.src)
-        target_port = str(tcp_field.dport)
+        target_port = tcp_field.dport
         if src_ip.replace('.', '-') in blacklist.keys():
             os.system("sudo iptables -A INPUT -i %s -p tcp -s %s --dport %d -j DROP" 
                 % (iface, src_ip, target_port))
