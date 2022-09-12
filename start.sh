@@ -39,23 +39,4 @@ sudo iptables -t nat -A POSTROUTING -o $IFACE -p tcp --dport 3306 --dst $NATIP -
 sudo iptables -t nat -A POSTROUTING -o $IFACE -p tcp --dport 5432 --dst $NATIP -j MASQUERADE
 sudo iptables -t nat -A POSTROUTING -o $IFACE -p tcp --dport 5900 --dst $NATIP -j MASQUERADE
 sudo iptables -t nat -A POSTROUTING -o $IFACE -p tcp --dport 6000 --dst $NATIP -j MASQUERADE
-sudo iptables -A FORWARD -p tcp --dport 21 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 22 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 23 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 25 -j ACCEPT
-sudo iptables -A FORWARD -p udp --dport 53 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 80 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 111 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 139 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 445 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 512 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 513 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 514 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 2049 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 2121 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 3306 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 5432 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 5900 -j ACCEPT
-sudo iptables -A FORWARD -p tcp --dport 6000 -j ACCEPT
-sudo iptables-save > /opt/honeypot/iptables.conf
 sudo python3 /opt/honeypot/sniff.py
