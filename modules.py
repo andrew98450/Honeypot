@@ -30,18 +30,18 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         src_ip = str(ip_field.src)
         target_port = tcp_field.dport
         if src_ip.replace('.', '-') in blacklist.keys() and tcp_field.flags == 0x02:
-            os.system("sudo iptables -A FORWARD -p tcp -s %s --dport %d -j DROP" % (src_ip, target_port))
+            os.system("sudo iptables -A INPUT -p tcp -s %s --dport %d -j DROP" % (src_ip, target_port))
         if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
-            os.system("sudo iptables -A FORWARD -p tcp -s %s --dport %d -j ACCEPT" % (src_ip, target_port))
+            os.system("sudo iptables -A INPUT -p tcp -s %s --dport %d -j ACCEPT" % (src_ip, target_port))
     elif packet.haslayer(IP) and packet.haslayer(UDP):
         ip_field = packet[IP]
         udp_field = packet[UDP]
         src_ip = str(ip_field.src)
         target_port = udp_field.dport
         if src_ip.replace('.', '-') in blacklist.keys():
-            os.system("sudo iptables -A FORWARD -p udp -s %s --dport %d -j DROP" % (src_ip, target_port))
+            os.system("sudo iptables -A INPUT -p udp -s %s --dport %d -j DROP" % (src_ip, target_port))
         if src_ip.replace('.', '-') not in blacklist.keys():
-            os.system("sudo iptables -A FORWARD -p udp -s %s --dport %d -j ACCEPT" % (src_ip, target_port))
+            os.system("sudo iptables -A INPUT -p udp -s %s --dport %d -j ACCEPT" % (src_ip, target_port))
 
 def get_information(packet : Packet, ref : db.Reference):
     info_ref = ref.child('info')
