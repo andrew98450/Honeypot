@@ -34,12 +34,13 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         ip_field = packet[IP]
         src_ip = str(ip_field.src)
         if src_ip.replace('.', '-') in blacklist.keys():
-            os.system("sudo iptables -A INPUT -s %s -j DROP" % src_ip)
+            os.system("sudo iptables -t nat -A INPUT -s %s -j DROP" % src_ip)
             filted_table.append(src_ip)
         if src_ip.replace('.', '-') not in blacklist.keys():
-            os.system("sudo iptables -R INPUT %d -s %s -j ACCEPT" % (filted_table.index(src_ip) + 1, src_ip))
+            os.system("sudo iptables -t nat -R INPUT %d -s %s -j ACCEPT" % (filted_table.index(src_ip) + 1, src_ip))
             filted_table.remove(src_ip)
         pickle.dump(filted_table, open('blacktable.filter', 'wb'))
+
 def get_information(packet : Packet, ref : db.Reference):
     info_ref = ref.child('info')
    
