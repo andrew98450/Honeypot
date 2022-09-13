@@ -45,7 +45,7 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
                 os.system("sudo iptables -A INPUT -i %s -s %s -j DROP" 
                     % (iface, ip))
             os.system("sudo iptables -A INPUT -i %s -j ACCEPT" 
-                % (iface, src_ip))
+                % (iface))
             filted_table.remove(src_ip)
         pickle.dump(filted_table, open('/opt/honeypot/blacktable.filter', 'wb'))
 
