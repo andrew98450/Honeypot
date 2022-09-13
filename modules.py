@@ -57,7 +57,7 @@ def get_information(packet : Packet, ref : db.Reference):
             })
             
 def shellcode_detect(packet : Packet, event_ref : db.Reference):
-
+    protocol = ''
     if packet.haslayer(IP):
         if packet.haslayer(TCP):
 
@@ -114,7 +114,7 @@ def shellcode_detect(packet : Packet, event_ref : db.Reference):
                     })
             
 def syn_flood_detect(packet : Packet, event_ref : db.Reference):
-    
+    protocol = ''
     if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet.getlayer(IP)
         tcp_field = packet.getlayer(TCP)
@@ -243,6 +243,7 @@ def port_tcp_scan_detect(packet : Packet, event_ref : db.Reference):
             })
 '''
 def port_xmas_scan_detect(packet : Packet, event_ref : db.Reference):
+    protocol = ''
     if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet.getlayer(IP)
         tcp_field = packet.getlayer(TCP)
@@ -293,6 +294,7 @@ def port_xmas_scan_detect(packet : Packet, event_ref : db.Reference):
             })
 
 def port_fin_scan_detect(packet : Packet, event_ref : db.Reference):
+    protocol = ''
     if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet.getlayer(IP)
         tcp_field = packet.getlayer(TCP)
@@ -343,6 +345,7 @@ def port_fin_scan_detect(packet : Packet, event_ref : db.Reference):
             })
             
 def port_null_scan_detect(packet : Packet, event_ref : db.Reference):
+    protocol = ''
     if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet.getlayer(IP)
         tcp_field = packet.getlayer(TCP)
@@ -393,6 +396,7 @@ def port_null_scan_detect(packet : Packet, event_ref : db.Reference):
             })
 
 def port_ack_scan_detect(packet : Packet, event_ref : db.Reference):
+    protocol = ''
     if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet.getlayer(IP)
         tcp_field = packet.getlayer(TCP)
