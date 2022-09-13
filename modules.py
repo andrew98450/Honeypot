@@ -1,5 +1,6 @@
 import os
 import pickle
+from struct import pack
 import time
 from scapy.all import *
 from scapy.layers.all import *
@@ -20,35 +21,24 @@ ports = {21 : Protocol.FTP, 22: Protocol.SSH, 23 : Protocol.TELNET,
     6000: Protocol.X11}
 emu = Emulator()
 syn_table = dict()
-
-if not os.path.exists('/opt/honeypot/blacktable.filter'):
-    filted_table = []
-else:
-    filted_table = pickle.load(open('/opt/honeypot/blacktable.filter', 'rb'))
+filted_table = []
 
 def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str):
     blacklist = blacklist_ref.get()
     
     if blacklist is None:
         blacklist = dict()
-    if packet.haslayer(IP):
+    if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet[IP]
+        tcp_field = packet[TCP]
         src_ip = str(ip_field.src)
-        if src_ip.replace('.', '-') in blacklist.keys():
-            os.system("sudo iptables -A INPUT -i %s -s %s -j DROP" 
-                % (iface, src_ip))
-            filted_table.append(src_ip)
-        if src_ip.replace('.', '-') not in blacklist.keys():
-            os.system("sudo iptables -F")
-            for ip in blacklist.keys():
-                ip = str(ip).replace('-', '.')
-                os.system("sudo iptables -A INPUT -i %s -s %s -j DROP" 
-                    % (iface, ip))
-            os.system("sudo iptables -A INPUT -i %s -j ACCEPT" 
-                % (iface))
-            filted_table.remove(src_ip)
-        pickle.dump(filted_table, open('/opt/honeypot/blacktable.filter', 'wb'))
-
+        for blacklist_ip in blacklist:
+            os.system("sudo iptables -A INPUT -i %s -p tcp --tcp-flags ACK ACK -s %s -j DROP" % (iface, blacklist_ip))
+            filted_table.append(blacklist_ip)
+        if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
+            os.system("sudo iptables -R INPUT %d -i %s -p tcp --tcp-flags ACK ACK -s %s -j ACCEPT"
+                % (filted_table.index(src_ip) + 1, iface, src_ip))
+                
 def get_information(packet : Packet, ref : db.Reference):
     info_ref = ref.child('info')
    
