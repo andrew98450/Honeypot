@@ -40,6 +40,10 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
             filted_table.append(src_ip)
         if src_ip.replace('.', '-') not in blacklist.keys():
             os.system("sudo iptables -D INPUT %d" % filted_table.index(src_ip) + 1)
+            for ip in blacklist.keys():
+                ip = str(ip).replace('-', '.')
+                os.system("sudo iptables -A INPUT -i %s -s %s -j DROP" 
+                    % (iface, ip))
             os.system("sudo iptables -A INPUT -i %s -s %s -j ACCEPT" 
                 % (iface, src_ip))
             filted_table.remove(src_ip)
