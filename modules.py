@@ -34,12 +34,12 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         src_ip = str(ip_field.src)
         for blacklist_ip in blacklist:
             if blacklist_ip.replace('-', '.') not in filted_table:
-                os.system("sudo iptables -A INPUT -i %s -p tcp --tcp-flags SYN SYN -s %s -j DROP"
+                os.system("sudo iptables -A FORWARD -i %s -p tcp --tcp-flags SYN SYN -s %s -j DROP"
                     % (iface, blacklist_ip.replace('-', '.')))
                 filted_table.append(blacklist_ip.replace('-', '.'))
         if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
             if src_ip in filted_table:
-                os.system("sudo iptables -R INPUT %d -i %s -p tcp --tcp-flags SYN SYN -s %s -j ACCEPT"
+                os.system("sudo iptables -R FORWARD %d -i %s -p tcp --tcp-flags SYN SYN -s %s -j ACCEPT"
                     % (filted_table.index(src_ip) + 1, iface, src_ip))
                 filted_table.remove(src_ip)
 
