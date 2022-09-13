@@ -21,10 +21,10 @@ ports = {21 : Protocol.FTP, 22: Protocol.SSH, 23 : Protocol.TELNET,
 emu = Emulator()
 syn_table = dict()
 
-if not os.path.exists('blacktable.filter'):
+if not os.path.exists('/opt/honeypot/blacktable.filter'):
     filted_table = []
 else:
-    filted_table = pickle.load(open('blacktable.filter', 'rb'))
+    filted_table = pickle.load(open('/opt/honeypot/blacktable.filter', 'rb'))
 
 def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str):
     blacklist = blacklist_ref.get()
@@ -32,7 +32,6 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         blacklist = dict()
     if packet.haslayer(IP) and packet.haslayer(TCP):
         ip_field = packet[IP]
-        tcp_field = packet[TCP]
         src_ip = str(ip_field.src)
         if src_ip.replace('.', '-') in blacklist.keys():
             os.system("sudo iptables -A INPUT -i %s -s %s -j DROP" 
@@ -42,7 +41,7 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
             os.system("sudo iptables -R INPUT %d -i %s -s %s -j ACCEPT" 
                 % (filted_table.index(src_ip) + 1, iface, src_ip))
             filted_table.remove(src_ip)
-        pickle.dump(filted_table, open('blacktable.filter', 'wb'))
+        pickle.dump(filted_table, open('/opt/honeypot/blacktable.filter', 'wb'))
 
 def get_information(packet : Packet, ref : db.Reference):
     info_ref = ref.child('info')
