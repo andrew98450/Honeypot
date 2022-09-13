@@ -28,6 +28,7 @@ else:
 
 def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str):
     blacklist = blacklist_ref.get()
+    
     if blacklist is None:
         blacklist = dict()
     if packet.haslayer(IP):
@@ -38,8 +39,13 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
                 % (iface, src_ip))
             filted_table.append(src_ip)
         if src_ip.replace('.', '-') not in blacklist.keys():
-            os.system("sudo iptables -R INPUT %d -i %s -s %s -j ACCEPT" 
-                % (filted_table.index(src_ip) + 1, iface, src_ip))
+            os.system("sudo iptables -F")
+            for ip in blacklist.keys():
+                ip = str(ip).replace('-', '.')
+                os.system("sudo iptables -A INPUT -i %s -s %s -j DROP" 
+                    % (iface, ip))
+            os.system("sudo iptables -A INPUT -i %s -s %s -j ACCEPT" 
+                % (iface, src_ip))
             filted_table.remove(src_ip)
         pickle.dump(filted_table, open('/opt/honeypot/blacktable.filter', 'wb'))
 
