@@ -33,12 +33,15 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
         tcp_field = packet[TCP]
         src_ip = str(ip_field.src)
         for blacklist_ip in blacklist:
-            os.system("sudo iptables -A INPUT -i %s -p tcp --tcp-flags ALL ALL -s %s -j DROP"
-                % (iface, str(blacklist_ip).replace('-', '.')))
-            filted_table.append(blacklist_ip)
+            if filted_table.index(blacklist_ip.replace('-', '.')) == -1:
+                os.system("sudo iptables -A INPUT -i %s -p tcp --tcp-flags SYN SYN -s %s -j DROP"
+                    % (iface, blacklist_ip.replace('-', '.')))
+                filted_table.append(blacklist_ip.replace('-', '.'))
         if src_ip.replace('.', '-') not in blacklist.keys() and tcp_field.flags == 0x02:
-            os.system("sudo iptables -R INPUT %d -i %s -p tcp --tcp-flags ALL ALL -s %s -j ACCEPT"
-                % (filted_table.index(src_ip) + 1, iface, src_ip))
+            if filted_table.index(src_ip) != -1:
+                os.system("sudo iptables -R INPUT %d -i %s -p tcp --tcp-flags SYN SYN -s %s -j ACCEPT"
+                    % (filted_table.index(src_ip) + 1, iface, src_ip))
+                filted_table.remove(src_ip)
 
 def get_information(packet : Packet, ref : db.Reference):
     info_ref = ref.child('info')
