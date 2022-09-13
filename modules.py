@@ -30,7 +30,7 @@ def filter_blacklist(packet : Packet, blacklist_ref : db.Reference, iface : str)
     blacklist = blacklist_ref.get()
     if blacklist is None:
         blacklist = dict()
-    if packet.haslayer(IP) and packet.haslayer(TCP):
+    if packet.haslayer(IP):
         ip_field = packet[IP]
         src_ip = str(ip_field.src)
         if src_ip.replace('.', '-') in blacklist.keys():
