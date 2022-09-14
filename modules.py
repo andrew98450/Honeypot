@@ -494,6 +494,7 @@ def sniffPacket(packet : Packet, connect_ref : db.Reference):
             time_ref = connect_ref.child(str(int(time.time())))
             time_ref.update({
                 'protocol' : protocol,
+                'l3_protocol' : "TCP",
                 'ttl' : ip_field.ttl,
                 'tos' : ip_field.tos,
                 'src_address' : ip_field.src,
@@ -542,6 +543,7 @@ def sniffPacket(packet : Packet, connect_ref : db.Reference):
             time_ref = connect_ref.child(str(int(time.time())))
             time_ref.update({
                 'protocol' : protocol,
+                'l3_protocol' : "UDP",
                 'ttl' : ip_field.ttl,
                 'tos' : ip_field.tos,
                 'src_address' : ip_field.src,
