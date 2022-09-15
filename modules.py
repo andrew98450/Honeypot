@@ -1,6 +1,4 @@
 import os
-import pickle
-from struct import pack
 import time
 from scapy.all import *
 from scapy.layers.all import *
@@ -113,6 +111,7 @@ def shellcode_detect(packet : Packet, event_ref : db.Reference):
                     time_ref.update({
                         "event_type" : "ShellCode",
                         "protocol" : protocol,
+                        "port": target_port,
                         "src_ip" : src_ip
                     })
             
@@ -169,6 +168,7 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
                     str(int(time.time())))
                 time_ref.update({
                     "event_type" : "Syn Flood",
+                    "port" : target_port,
                     "protocol" : protocol,
                     "src_ip" : src_ip
                 })
@@ -207,7 +207,8 @@ def dns_fuzz_detect(packet : Packet, event_ref : db.Reference):
                 str(int(time.time())))
             time_ref.update({
                 "event_type" : "DNS Fuzz",
-                "protocol" : 'DNS',
+                "protocol" : 'dns',
+                "port" : udp_field.dport,
                 "src_ip" : ip_field.src
             })
 '''
@@ -292,7 +293,7 @@ def port_xmas_scan_detect(packet : Packet, event_ref : db.Reference):
                 "event_type" : "PORT Scan",
                 "scan_type" : "XMAS",
                 "protocol" : protocol,
-                "port" : str(target_port),
+                "port" : target_port,
                 "src_ip" : ip_field.src
             })
 
@@ -343,7 +344,7 @@ def port_fin_scan_detect(packet : Packet, event_ref : db.Reference):
                 "event_type" : "PORT Scan",
                 "scan_type" : "FIN",
                 "protocol" : protocol,
-                "port" : str(target_port),
+                "port" : target_port,
                 "src_ip" : ip_field.src
             })
             
@@ -394,7 +395,7 @@ def port_null_scan_detect(packet : Packet, event_ref : db.Reference):
                 "event_type" : "PORT Scan",
                 "scan_type" : "NULL",
                 "protocol" : protocol,
-                "port" : str(target_port),
+                "port" : target_port,
                 "src_ip" : ip_field.src
             })
 
@@ -445,7 +446,7 @@ def port_ack_scan_detect(packet : Packet, event_ref : db.Reference):
                 "event_type" : "PORT Scan",
                 "scan_type" : "ACK",
                 "protocol" : protocol,
-                "port" : str(target_port),
+                "port" : target_port,
                 "src_ip" : ip_field.src
             })
 
