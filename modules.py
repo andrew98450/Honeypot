@@ -50,9 +50,9 @@ def get_information(packet : Packet, ref : db.Reference):
     if packet.haslayer(IP):
         if packet.haslayer(TCP):
             ip_field = packet[IP]
-            dst_ip = ip_field.dst
+            src_ip = ip_field.src
             info = p0f(packet)
-            ip_ref = info_ref.child(str(dst_ip).replace('.', '-'))
+            ip_ref = info_ref.child(str(src_ip).replace('.', '-'))
             ip_ref.update({
                 'sysinfo' : info
             })
