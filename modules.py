@@ -157,20 +157,20 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
         elif ports[target_port] == Protocol.X11:
             protocol = 'x11'
         if tcp_field.flags & 2:
-            if src_ip not in syn_table.keys():
+            if src_ip.replace('.', '-') not in syn_table.keys():
                 if tcp_field.ack != 1:
-                    syn_table[src_ip] = 1
+                    syn_table[src_ip.replace('.', '-')] = 1
             else:
                 if tcp_field.ack != 1:
-                    syn_table[src_ip] += 1
-            if syn_table[src_ip] > 30 and tcp_field.ack == 0:
+                    syn_table[src_ip.replace('.', '-')] += 1
+            if syn_table[src_ip.replace('.', '-')] > 30 and tcp_field.ack == 0:
                 time_ref = event_ref.child(
                     str(int(time.time())))
                 time_ref.update({
                     "event_type" : "Syn Flood",
                     "port" : target_port,
                     "protocol" : protocol,
-                    "src_ip" : src_ip
+                    "src_ip" : src_ip.replace('.', '-')
                 })
 '''
 def arp_spoof_detect(packet : Packet, event_ref : db.Reference, iface : str):
