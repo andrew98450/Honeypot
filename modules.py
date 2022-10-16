@@ -163,15 +163,16 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
             else:
                 if tcp_field.ack != 1:
                     syn_table[src_ip.replace('.', '-')] += 1
-            if syn_table[src_ip.replace('.', '-')] > 30 and tcp_field.ack == 0:
-                time_ref = event_ref.child(
-                    str(int(time.time())))
-                time_ref.update({
-                    "event_type" : "Syn Flood",
-                    "port" : target_port,
-                    "protocol" : protocol,
-                    "src_ip" : src_ip.replace('.', '-')
-                })
+            if src_ip.replace('.', '-') in syn_table.keys():
+                if syn_table[src_ip.replace('.', '-')] > 30 and tcp_field.ack == 0:
+                    time_ref = event_ref.child(
+                        str(int(time.time())))
+                    time_ref.update({
+                        "event_type" : "Syn Flood",
+                        "port" : target_port,
+                        "protocol" : protocol,
+                        "src_ip" : src_ip.replace('.', '-')
+                    })
 '''
 def arp_spoof_detect(packet : Packet, event_ref : db.Reference, iface : str):
     
