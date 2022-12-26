@@ -15,7 +15,7 @@ ports = {21 : Protocol.FTP, 22: Protocol.SSH, 23 : Protocol.TELNET,
     25: Protocol.SMTP, 53 : Protocol.DNS, 80 : Protocol.HTTP, 
     111: Protocol.RPCBIND, 139: Protocol.NETBIOS, 445 : Protocol.SMB,
     512: Protocol.EXEC, 513: Protocol.LOGIN, 514: Protocol.SHELL,
-    2121: Protocol.CCPROXY, 3306: Protocol.MYSQL, 5900: Protocol.VNC,
+    2121: Protocol.CCPROXY, 3306: Protocol.MYSQL, 5432: Protocol.POSTGRESQL, 5900: Protocol.VNC,
     6000: Protocol.X11}
 emu = Emulator()
 syn_table = dict()
@@ -164,7 +164,7 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
                 if tcp_field.ack != 1:
                     syn_table[src_ip.replace('.', '-')] += 1
             if src_ip.replace('.', '-') in syn_table.keys():
-                if syn_table[src_ip.replace('.', '-')] > 30 and tcp_field.ack == 0:
+                if syn_table[src_ip.replace('.', '-')] > 200 and tcp_field.ack == 0:
                     time_ref = event_ref.child(
                         str(int(time.time())))
                     time_ref.update({
