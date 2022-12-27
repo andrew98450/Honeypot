@@ -163,6 +163,9 @@ def syn_flood_detect(packet : Packet, event_ref : db.Reference):
             else:
                 if tcp_field.ack != 1:
                     syn_table[src_ip.replace('.', '-')] += 1
+                else:
+                    syn_table[src_ip.replace('.', '-')] = 1
+                    
             if src_ip.replace('.', '-') in syn_table.keys():
                 if syn_table[src_ip.replace('.', '-')] > 200 and tcp_field.ack == 0:
                     time_ref = event_ref.child(
