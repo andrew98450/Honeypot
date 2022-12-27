@@ -53,7 +53,7 @@ def get_information(packet : Packet, ref : db.Reference):
             src_ip = ip_field.dst
             info = p0f(packet)
             ip_ref = info_ref.child(str(src_ip).replace('.', '-'))
-            ip_ref.update({
+            ip_ref.set({
                 'sysinfo' : info
             })
             
